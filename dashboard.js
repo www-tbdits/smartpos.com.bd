@@ -46,7 +46,7 @@ document.getElementById('changePasswordBtn').onclick = () => {
 // --- ৩. ফিচার লিস্ট ও গ্রিড রেন্ডারিং ---
 const features = [
     { id: 'reports', label: 'Sales Reports', icon: 'bx bxs-file', link: 'reports.html' },
-    { id: 'sales', label: 'Sales of Point', icon: 'bx bxs-cart', link: 'CloudPOS.html' },
+    { id: 'sales', label: 'Sales of Point', icon: 'bx bxs-cart', link: 'ColudPOS.html' },
     { id: 'customers', label: 'Customers', icon: 'bx bxs-user', link: 'customers.html' },
     { id: 'products', label: 'Products', icon: 'bx bxs-box', link: 'products.html' },
     { id: 'user-permission', label: 'User Control', icon: 'bx bxs-user-check', link: 'UserControl.html' },
