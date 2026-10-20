@@ -1,74 +1,81 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartPOS </title>  
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%23275efe' d='M416 208c0-45.9-34.5-83.8-79.1-89.2C318.4 79.5 275.6 48 224 48c-61.9 0-112 50.1-112 112 0 7.8 .8 15.4 2.4 22.8C51.5 195.4 16 242.3 16 296c0 61.9 50.1 112 112 112h288c53 0 96-43 96-96 0-43.1-28.1-79.5-67-91.8z'/><path fill='%23ffffff' d='M256 192l-80 80h48v96h64v-96h48l-80-80z'/></svg>">  
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-<style>
-  * {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPOS </title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%23275efe' d='M416 208c0-45.9-34.5-83.8-79.1-89.2C318.4 79.5 275.6 48 224 48c-61.9 0-112 50.1-112 112 0 7.8 .8 15.4 2.4 22.8C51.5 195.4 16 242.3 16 296c0 61.9 50.1 112 112 112h288c53 0 96-43 96-96 0-43.1-28.1-79.5-67-91.8z'/><path fill='%23ffffff' d='M256 192l-80 80h48v96h64v-96h48l-80-80z'/></svg>">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;900&family=Orbitron:wght@700;900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Plus Jakarta Sans', sans-serif;
-  }
+    }
 
-  header, header .company-name, .icon-card span, .pos-stylish-brand, #userDisplay {
+    header,
+    header .company-name,
+    .icon-card span,
+    .pos-stylish-brand,
+    #userDisplay {
       font-family: 'Orbitron', sans-serif !important;
-  }
+    }
 
-  body {
-    background: #e4ebf5;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+    body {
+      background: #e4ebf5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-  header {
-    background: #e4ebf5;
-    color: #1e3a8a;
-    padding: 0px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 10px 5px 25px rgba(203, 205, 209, 0.6);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-    border-bottom: 0px;
-  }
+    header {
+      background: #e4ebf5;
+      color: #1e3a8a;
+      padding: 0px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 10px 5px 25px rgba(203, 205, 209, 0.6);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+      border-bottom: 0px;
+    }
 
-header img {
-    height: 68px;
-    width: 150px;
-    border-radius: 2px;
-    margin-right: 19px;
-}
+    header img {
+      height: 68px;
+      width: 150px;
+      border-radius: 2px;
+      margin-right: 19px;
+    }
 
-  header .company-name { 
-      font-size: 25px; 
-      font-weight: 900; 
+    header .company-name {
+      font-size: 25px;
+      font-weight: 900;
       margin-left: 0px;
       color: #1e3a8a;
       letter-spacing: 1.5px;
       -webkit-text-stroke: 0.5px #1e3a8a;
       text-shadow: 1px 1px 2px #cbced1, -1px -1px 2px #ffffff;
-  }
+    }
 
-  /* User Profile & Dropdown Menu Styles */
-  .user-profile-container {
+    /* User Profile & Dropdown Menu Styles */
+    .user-profile-container {
       position: relative;
       display: inline-block;
-  }
+    }
 
-  .user-profile-btn {
+    .user-profile-btn {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -79,22 +86,22 @@ header img {
       box-shadow: 4px 4px 10px #cbced1, -4px -4px 10px #ffffff;
       transition: all 0.2s ease;
       border: 1px solid rgba(255, 255, 255, 0.6);
-  }
+    }
 
-  .user-profile-btn:hover {
+    .user-profile-btn:hover {
       box-shadow: 2px 2px 6px #cbced1, -2px -2px 6px #ffffff;
-  }
+    }
 
-  .user-profile-btn i.user-icon {
+    .user-profile-btn i.user-icon {
       font-size: 20px;
       color: #275efe;
       background: #e4ebf5;
       padding: 8px;
       border-radius: 50%;
       box-shadow: inset 2px 2px 5px #cbced1, inset -2px -2px 5px #ffffff;
-  }
+    }
 
-  .user-dropdown-menu {
+    .user-dropdown-menu {
       position: absolute;
       right: 0;
       top: 55px;
@@ -107,13 +114,13 @@ header img {
       overflow: hidden;
       z-index: 100;
       border: 1px solid rgba(255, 255, 255, 0.8);
-  }
+    }
 
-  .user-dropdown-menu.show {
+    .user-dropdown-menu.show {
       display: flex;
-  }
+    }
 
-  .user-dropdown-item {
+    .user-dropdown-item {
       padding: 12px 16px;
       display: flex;
       align-items: center;
@@ -124,662 +131,749 @@ header img {
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s, color 0.2s;
-  }
+    }
 
-  .user-dropdown-item:hover {
+    .user-dropdown-item:hover {
       background: #d6e0ef;
       color: #2563eb;
-  }
+    }
 
-  .user-dropdown-item i {
+    .user-dropdown-item i {
       font-size: 16px;
       color: #275efe;
-  }
-
-  .user-dropdown-item.logout-btn i {
-      color: #ef4444;
-  }
-
-  .user-dropdown-item.logout-btn:hover {
-      color: #ef4444;
-  }
-
-  main {
-    flex: 1;
-    display: flex;
-    gap: 10px;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: 15px;
-    margin-top: 80px;
-    margin-bottom: 60px;
-  }
-
-  .icon-grid {
-    display: grid;
-    gap: 15px;
-    justify-items: center;
-    align-items: center;
-  }
-
-  .icon-grid.full-access {
-    grid-template-columns: repeat(2, 150px);
-  }
-
-  .icon-grid.partial-access {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
-
-  .icon-card {
-    background: #e4ebf5;
-    padding: 20px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 6px 6px 14px #cbced1, -6px -6px 14px #ffffff;
-    transition: all 0.2s ease;
-    width: 100%;
-    height: 100%;
-  }
-
-  .icon-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 4px 4px 10px #cbced1, -4px -4px 10px #ffffff;
-    color: #2563eb;
-  }
-
-  .icon-card:active {
-    box-shadow: inset 4px 4px 8px #cbced1, inset -4px -4px 8px #ffffff;
-  }
-
-  .icon-card i { font-size: 36px; color: #275efe; margin-bottom: 10px; }
-  .icon-card span { font-weight: 700; color: #334155; text-align: center; font-size: 12px; letter-spacing: 0.5px; }
-
-  .image-box {
-    flex: 1;
-    background: #e4ebf5;
-    border-radius: 14px;
-    box-shadow: inset 6px 6px 12px #cbced1, inset -6px -6px 12px #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    min-height: 559px;
-  }
-
-  .ecosystem-container {
-    position: relative;
-    width: 100%;
-    max-width: 650px;
-    height: 460px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pos-stylish-brand {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    font-size: 24px;
-    font-weight: 900;
-    color: #1e3a8a;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    z-index: 5;
-    background: #e4ebf5;
-    padding: 10px 18px;
-    border-bottom-left-radius: 16px;
-    border-top-right-radius: 16px;
-    box-shadow: -4px 4px 10px #cbced1, 4px -4px 10px #ffffff;
-    text-shadow: 1px 1px 2px #cbced1, -1px -1px 2px #ffffff;
-  }
-
-  .pos-cloud-hub {
-    position: absolute;
-    top: 45px;
-    width: 78px;
-    height: 78px;
-    background: #e4ebf5;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 8px 8px 16px #beccde, -8px -8px 16px #ffffff;
-    padding: 15px;
-    z-index: 5;
-  }
-
-  .pos-cloud-hub svg {
-    width: 38px;
-    height: 38px;
-    filter: drop-shadow(0px 2px 4px rgba(39, 94, 254, 0.3));
-  }
-
-  .pos-server-hub {
-    position: absolute;
-    top: 175px;
-    width: 82px;
-    height: 82px;
-    background: #e4ebf5;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff;
-    color: #275efe;
-    font-size: 32px;
-    z-index: 5;
-    animation: pulseServer 3s infinite ease-in-out;
-  }
-
-  @keyframes pulseServer {
-    0%, 100% { box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff, 0 0 0 0 rgba(39, 94, 254, 0.25); }
-    50% { box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff, 0 0 0 14px rgba(39, 94, 254, 0); }
-  }
-
-  .eco-node {
-    position: absolute;
-    width: 46px;
-    height: 46px;
-    background: #e4ebf5;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 5px 5px 12px #cbced1, -5px -5px 12px #ffffff;
-    color: #275efe;
-    font-size: 19px;
-    z-index: 3;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .eco-node i {
-    opacity: 0.80;
-    transition: all 0.3s;
-  }
-
-  .eco-node:hover {
-    transform: scale(1.2) translateY(-3px);
-    color: #1e3a8a;
-    box-shadow: 7px 7px 15px #cbced1, -7px -7px 15px #ffffff;
-    z-index: 6;
-  }
-
-  .node-database    { top: 100px; left: 15px; }    
-  .node-security    { top: 100px; right: 15px; }    
-  .node-customer    { top: 185px; left: 2px; }    
-  .node-userctrl    { top: 185px; right: 2px; }   
-  .node-pos-term    { top: 275px; left: 15px; }  
-  .node-mobile      { top: 275px; right: 15px; }   
-  .node-api         { bottom: 30px; left: 100px; }        
-  .node-analytics   { bottom: 30px; right: 100px; }    
-  .node-printer     { bottom: 25px; left: 225px; }    
-  .node-help        { bottom: 25px; right: 225px; }        
-
-  .ecosystem-svg-lines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .eco-line {
-    stroke: #9cb8d9;
-    stroke-width: 2;
-    stroke-dasharray: 5;
-    animation: dashAnimation 18s linear infinite;
-  }
-
-  @keyframes dashAnimation {
-    to {
-      stroke-dashoffset: -200;
     }
-  }
 
-  .site-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #e4ebf5;
-    padding: 14px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px -5px 20px rgba(203, 205, 209, 0.6);
-    font-size: 12px;
-    color: #627490;
-    font-weight: 500;
-    border-top: 1px solid rgba(255, 255, 255, 0.6);
-    z-index: 10;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-  }
-  .site-footer span, .site-footer a, .site-footer strong {
+    .user-dropdown-item.logout-btn i {
+      color: #ef4444;
+    }
+
+    .user-dropdown-item.logout-btn:hover {
+      color: #ef4444;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: stretch;
+      padding: 15px;
+      margin-top: 80px;
+      margin-bottom: 60px;
+    }
+
+    .icon-grid {
+      display: grid;
+      gap: 15px;
+      justify-items: center;
+      align-items: center;
+    }
+
+    .icon-grid.full-access {
+      grid-template-columns: repeat(2, 150px);
+    }
+
+    .icon-grid.partial-access {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .icon-card {
+      background: #e4ebf5;
+      padding: 20px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 6px 6px 14px #cbced1, -6px -6px 14px #ffffff;
+      transition: all 0.2s ease;
+      width: 100%;
+      height: 100%;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 4px 4px 10px #cbced1, -4px -4px 10px #ffffff;
+      color: #2563eb;
+    }
+
+    .icon-card:active {
+      box-shadow: inset 4px 4px 8px #cbced1, inset -4px -4px 8px #ffffff;
+    }
+
+    .icon-card i {
+      font-size: 36px;
+      color: #275efe;
+      margin-bottom: 10px;
+    }
+
+    .icon-card span {
+      font-weight: 700;
+      color: #334155;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .image-box {
+      flex: 1;
+      background: #e4ebf5;
+      border-radius: 14px;
+      box-shadow: inset 6px 6px 12px #cbced1, inset -6px -6px 12px #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      min-height: 559px;
+    }
+
+    .ecosystem-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      height: 460px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pos-stylish-brand {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      font-size: 24px;
+      font-weight: 900;
+      color: #1e3a8a;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      z-index: 5;
+      background: #e4ebf5;
+      padding: 10px 18px;
+      border-bottom-left-radius: 16px;
+      border-top-right-radius: 16px;
+      box-shadow: -4px 4px 10px #cbced1, 4px -4px 10px #ffffff;
+      text-shadow: 1px 1px 2px #cbced1, -1px -1px 2px #ffffff;
+    }
+
+    .pos-cloud-hub {
+      position: absolute;
+      top: 45px;
+      width: 78px;
+      height: 78px;
+      background: #e4ebf5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 8px 8px 16px #beccde, -8px -8px 16px #ffffff;
+      padding: 15px;
+      z-index: 5;
+    }
+
+    .pos-cloud-hub svg {
+      width: 38px;
+      height: 38px;
+      filter: drop-shadow(0px 2px 4px rgba(39, 94, 254, 0.3));
+    }
+
+    .pos-server-hub {
+      position: absolute;
+      top: 175px;
+      width: 82px;
+      height: 82px;
+      background: #e4ebf5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff;
+      color: #275efe;
+      font-size: 32px;
+      z-index: 5;
+      animation: pulseServer 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseServer {
+
+      0%,
+      100% {
+        box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff, 0 0 0 0 rgba(39, 94, 254, 0.25);
+      }
+
+      50% {
+        box-shadow: 10px 10px 20px #beccde, -10px -10px 20px #ffffff, 0 0 0 14px rgba(39, 94, 254, 0);
+      }
+    }
+
+    .eco-node {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      background: #e4ebf5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 5px 5px 12px #cbced1, -5px -5px 12px #ffffff;
+      color: #275efe;
+      font-size: 19px;
+      z-index: 3;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .eco-node i {
+      opacity: 0.80;
+      transition: all 0.3s;
+    }
+
+    .eco-node:hover {
+      transform: scale(1.2) translateY(-3px);
+      color: #1e3a8a;
+      box-shadow: 7px 7px 15px #cbced1, -7px -7px 15px #ffffff;
+      z-index: 6;
+    }
+
+    .node-database {
+      top: 100px;
+      left: 15px;
+    }
+
+    .node-security {
+      top: 100px;
+      right: 15px;
+    }
+
+    .node-customer {
+      top: 185px;
+      left: 2px;
+    }
+
+    .node-userctrl {
+      top: 185px;
+      right: 2px;
+    }
+
+    .node-pos-term {
+      top: 275px;
+      left: 15px;
+    }
+
+    .node-mobile {
+      top: 275px;
+      right: 15px;
+    }
+
+    .node-api {
+      bottom: 30px;
+      left: 100px;
+    }
+
+    .node-analytics {
+      bottom: 30px;
+      right: 100px;
+    }
+
+    .node-printer {
+      bottom: 25px;
+      left: 225px;
+    }
+
+    .node-help {
+      bottom: 25px;
+      right: 225px;
+    }
+
+    .ecosystem-svg-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .eco-line {
+      stroke: #9cb8d9;
+      stroke-width: 2;
+      stroke-dasharray: 5;
+      animation: dashAnimation 18s linear infinite;
+    }
+
+    @keyframes dashAnimation {
+      to {
+        stroke-dashoffset: -200;
+      }
+    }
+
+    .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #e4ebf5;
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0px -5px 20px rgba(203, 205, 209, 0.6);
+      font-size: 12px;
+      color: #627490;
+      font-weight: 500;
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
+      z-index: 10;
       font-family: 'Plus Jakarta Sans', sans-serif !important;
-  }
-  .site-footer i {
+    }
+
+    .site-footer span,
+    .site-footer a,
+    .site-footer strong {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    .site-footer i {
       font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
       font-weight: 900 !important;
-  }
-  .footer-left {
+    }
+
+    .footer-left {
       display: flex;
       align-items: center;
       gap: 8px;
       font-weight: 600;
       color: #1e3a8a;
-  }
-  .footer-left i {
+    }
+
+    .footer-left i {
       color: #275efe;
       font-size: 14px;
-  }
-  .footer-right {
+    }
+
+    .footer-right {
       display: flex;
       align-items: center;
       gap: 20px;
-  }
-  .footer-item {
+    }
+
+    .footer-item {
       display: flex;
       align-items: center;
       gap: 6px;
-  }
-  .footer-item i {
+    }
+
+    .footer-item i {
       color: #275efe;
-  }
-  .footer-item strong {
+    }
+
+    .footer-item strong {
       color: #334155;
-  }
-  .footer-link {
+    }
+
+    .footer-link {
       color: #334155;
       text-decoration: none;
       font-weight: 700;
       transition: color 0.3s;
-  }
-  .footer-link:hover {
+    }
+
+    .footer-link:hover {
       color: #2563eb;
-  }
+    }
 
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
       .site-footer {
-          flex-direction: column;
-          gap: 8px;
-          text-align: center;
-          padding: 12px 15px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        padding: 12px 15px;
       }
-      .footer-right {
-          flex-direction: column;
-          gap: 5px;
-      }
-  }
 
-  @media (max-width: 900px) {
-    main {
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      margin-top: 90px;
-      margin-bottom: 120px;
+      .footer-right {
+        flex-direction: column;
+        gap: 5px;
+      }
     }
-    .icon-grid.full-access, .icon-grid.partial-access {
-      grid-template-columns: repeat(2, 1fr);
-      width: 100%;
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        margin-top: 90px;
+        margin-bottom: 120px;
+      }
+
+      .icon-grid.full-access,
+      .icon-grid.partial-access {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+      }
+
+      .image-box {
+        width: 100%;
+        min-height: 460px;
+        margin-top: 10px;
+      }
     }
-    .image-box {
-      width: 100%;
-      min-height: 460px;
-      margin-top: 10px;
-    }
-  }
-</style>
+  </style>
 </head>
+
 <body>
 
-<script>
-  const targetRedirectLink = 'index.html'; 
+  <script>
+    const targetRedirectLink = 'index.html';
 
-  const isLogged = localStorage.getItem('tbdits_logged_in');
-  const loggedInUser = JSON.parse(localStorage.getItem('tbdits_user') || 'null');
-  
-  if (!isLogged || !loggedInUser) {
-    window.location.replace(targetRedirectLink);
-  }
-</script>
+    const isLogged = localStorage.getItem('tbdits_logged_in');
+    const loggedInUser = JSON.parse(localStorage.getItem('tbdits_user') || 'null');
 
-<header>
-  <div class="company-info" style="display:flex; align-items:center; width:100%; justify-content:space-between;">
-    <div style="display:flex; align-items:center;">
-      <img src="images/PosLogo.png" alt="Logo" onerror="this.style.display='none'" />
-      <div class="company-name">TECH BD IT SOLUTIONS</div>
-    </div>
-    
-    <!-- ইউজার আইকন ও ড্রপডাউন মেনু সেকশন -->
-    <div class="user-profile-container" id="userProfileContainer">
-      <div class="user-profile-btn" id="userProfileBtn">
-        <i class='bx bxs-user user-icon'></i>
-        <div style="display:flex; align-items:center; gap:4px; font-weight:600; color:#334155; font-size:14px;">
-          <span id="userDisplay" style="color:#2563eb; font-weight:700;"></span>
-        </div>
-        <i class='bx bx-chevron-down' style="font-size: 16px; color: #627490;"></i>
-      </div>
-      
-      <div class="user-dropdown-menu" id="userDropdownMenu">
-        <div class="user-dropdown-item" id="changePasswordBtn">
-          <i class='bx bxs-key'></i>
-          <span>Password Change</span>
-        </div>
-        <div class="user-dropdown-item logout-btn" id="dropdownLogoutBtn">
-          <i class='bx bxs-log-out-circle'></i>
-          <span>Logout</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</header>
-
-<main>
-  <div class="icon-grid" id="iconGrid"></div>
-
-  <div class="image-box">
-    <div class="pos-stylish-brand">Smart POS</div>
-
-    <div class="ecosystem-container">
-      <svg class="ecosystem-svg-lines" viewBox="0 0 620 420">
-        <line x1="310" y1="84" x2="310" y2="175" class="eco-line" stroke-width="2.5" />
-        <line x1="310" y1="216" x2="40" y2="120" class="eco-line" />
-        <line x1="310" y1="216" x2="580" y2="120" class="eco-line" />
-        <line x1="310" y1="216" x2="25" y2="205" class="eco-line" />
-        <line x1="310" y1="216" x2="595" y2="205" class="eco-line" />
-        <line x1="310" y1="216" x2="40" y2="295" class="eco-line" />
-        <line x1="310" y1="216" x2="580" y2="295" class="eco-line" />
-        <line x1="310" y1="216" x2="125" y2="375" class="eco-line" />
-        <line x1="310" y1="216" x2="495" y2="375" class="eco-line" />
-        <line x1="310" y1="216" x2="250" y2="385" class="eco-line" />
-        <line x1="310" y1="216" x2="370" y2="385" class="eco-line" />
-      </svg>
-
-      <div class="pos-cloud-hub" title="Cloud Hub">
-       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <path
-    fill="#275efe"
-    d="M416 208c0-45.9-34.5-83.8-79.1-89.2C318.4 79.5 275.6 48 224 48c-61.9 0-112 50.1-112 112 0 7.8 .8 15.4 2.4 22.8C51.5 195.4 16 242.3 16 296c0 61.9 50.1 112 112 112h288c53 0 96-43 96-96 0-43.1-28.1-79.5-67-91.8z"
-  />
-  <path
-    fill="#ffffff"
-    d="M256 192l-80 80h48v96h64v-96h48l-80-80z"
-  />
-</svg>
-      </div>
-
-      <div class="pos-server-hub" title="Core Server">
-        <i class='bx bx-server'></i>
-      </div>
-
-      <div class="eco-node node-database" title="Database SQL"><i class='bx bx-data'></i></div>
-      <div class="eco-node node-security" title="Security & Shield"><i class='bx bx-shield-quarter'></i></div>
-      <div class="eco-node node-customer" title="Customer Management"><i class='bx bxs-user-detail'></i></div>
-      <div class="eco-node node-userctrl" title="User Control"><i class='bx bxs-user-check'></i></div>
-      <div class="eco-node node-pos-term" title="POS Terminal"><i class='bx bx-desktop'></i></div>
-      <div class="eco-node node-mobile" title="Mobile App Ecosystem"><i class='bx bx-mobile-alt'></i></div>
-      <div class="eco-node node-api" title="API Gateway"><i class='bx bx-transfer-alt'></i></div>
-      <div class="eco-node node-analytics" title="Business Analytics"><i class='bx bx-pie-chart-alt-2'></i></div>
-      <div class="eco-node node-printer" title="Receipt Printer"><i class='bx bx-printer'></i></div>
-      <div class="eco-node node-help" title="Help & Support"><i class='bx bx-help-circle'></i></div>
-    </div>
-  </div>
-</main>
-
-<div id="popupManager"></div>
-<div id="minimizedDock" style="position: fixed; bottom: 15px; right: 15px; display: flex; flex-direction: column-reverse; gap: 8px; z-index: 10000; align-items: flex-end; pointer-events: none;"></div>
-
-<script>
-  const userDisplay = document.getElementById('userDisplay');
-  if(loggedInUser) userDisplay.textContent = loggedInUser.username;
-
-  // ইউজার প্রোফাইল ড্রপডাউন টগল করার ফাংশনালিটি
-  const userProfileBtn = document.getElementById('userProfileBtn');
-  const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-  userProfileBtn.onclick = (e) => {
-    e.stopPropagation();
-    userDropdownMenu.classList.toggle('show');
-  };
-
-  window.onclick = () => {
-    if(userDropdownMenu.classList.contains('show')) {
-      userDropdownMenu.classList.remove('show');
+    if (!isLogged || !loggedInUser) {
+      window.location.replace(targetRedirectLink);
     }
-  };
+  </script>
 
-  // লগআউট হ্যান্ডলার
-  function handleLogout() {
-    localStorage.removeItem('tbdits_active_windows');
-    localStorage.removeItem('tbdits_logged_in');
-    localStorage.removeItem('tbdits_user');
-    window.location.replace(targetRedirectLink);
-  }
+  <header>
+    <div class="company-info" style="display:flex; align-items:center; width:100%; justify-content:space-between;">
+      <div style="display:flex; align-items:center;">
+        <img src="images/PosLogo.png" alt="Logo" onerror="this.style.display='none'" />
+        <div class="company-name">TECH BD IT SOLUTIONS</div>
+      </div>
 
-  document.getElementById('dropdownLogoutBtn').onclick = handleLogout;
+      <!-- ইউজার আইকন ও ড্রপডাউন মেনু সেকশন -->
+      <div class="user-profile-container" id="userProfileContainer">
+        <div class="user-profile-btn" id="userProfileBtn">
+          <i class='bx bxs-user user-icon'></i>
+          <div style="display:flex; align-items:center; gap:4px; font-weight:600; color:#334155; font-size:14px;">
+            <span id="userDisplay" style="color:#2563eb; font-weight:700;"></span>
+          </div>
+          <i class='bx bx-chevron-down' style="font-size: 16px; color: #627490;"></i>
+        </div>
 
-  document.getElementById('changePasswordBtn').onclick = () => {
-    alert("Password change feature can be linked here!");
-  };
+        <div class="user-dropdown-menu" id="userDropdownMenu">
+          <div class="user-dropdown-item" id="changePasswordBtn">
+            <i class='bx bxs-key'></i>
+            <span>Password Change</span>
+          </div>
+          <div class="user-dropdown-item logout-btn" id="dropdownLogoutBtn">
+            <i class='bx bxs-log-out-circle'></i>
+            <span>Logout</span>
+          </div>
+        </div>
+      </div>
 
-  const features = [
-    { id: 'reports', label: 'Sales Reports', icon: 'bx bxs-file', link: 'reports.html' },
-    { id: 'sales', label: 'Sales of Point', icon: 'bx bxs-cart', link: 'ColudPOS.html' },
-    { id: 'customers', label: 'Customers', icon: 'bx bxs-user', link: 'customers.html' },
-    { id: 'products', label: 'Products', icon: 'bx bxs-box', link: 'products.html' },
-    { id: 'user-permission', label: 'User Control', icon: 'bx bxs-user-check', link: 'UserControl.html' },
-    { id: 'inventory', label: 'Inventory', icon: 'bx bxs-data', link: 'inventory.html' },
-    { id: 'help', label: 'Help', icon: 'bx bxs-help-circle', link: 'help.html' },
-    { id: 'logout', label: 'Logout', icon: 'bx bxs-log-out-circle' }
-  ];
+    </div>
+  </header>
 
-  const iconGrid = document.getElementById('iconGrid');
-  const popupManager = document.getElementById('popupManager');
-  const minimizedDock = document.getElementById('minimizedDock');
+  <main>
+    <div class="icon-grid" id="iconGrid"></div>
 
-  const fullAccessUsers = ['jems']; 
-  const isFullAccess = fullAccessUsers.includes(loggedInUser.username);
+    <div class="image-box">
+      <div class="pos-stylish-brand">Smart POS</div>
 
-  if(isFullAccess){
-    iconGrid.classList.add('full-access');
-  }else{
-    iconGrid.classList.add('partial-access');
-  }
+      <div class="ecosystem-container">
+        <svg class="ecosystem-svg-lines" viewBox="0 0 620 420">
+          <line x1="310" y1="84" x2="310" y2="175" class="eco-line" stroke-width="2.5" />
+          <line x1="310" y1="216" x2="40" y2="120" class="eco-line" />
+          <line x1="310" y1="216" x2="580" y2="120" class="eco-line" />
+          <line x1="310" y1="216" x2="25" y2="205" class="eco-line" />
+          <line x1="310" y1="216" x2="595" y2="205" class="eco-line" />
+          <line x1="310" y1="216" x2="40" y2="295" class="eco-line" />
+          <line x1="310" y1="216" x2="580" y2="295" class="eco-line" />
+          <line x1="310" y1="216" x2="125" y2="375" class="eco-line" />
+          <line x1="310" y1="216" x2="495" y2="375" class="eco-line" />
+          <line x1="310" y1="216" x2="250" y2="385" class="eco-line" />
+          <line x1="310" y1="216" x2="370" y2="385" class="eco-line" />
+        </svg>
 
-  let activeWindowsState = JSON.parse(localStorage.getItem('tbdits_active_windows')) || {};
+        <div class="pos-cloud-hub" title="Cloud Hub">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="#275efe"
+              d="M416 208c0-45.9-34.5-83.8-79.1-89.2C318.4 79.5 275.6 48 224 48c-61.9 0-112 50.1-112 112 0 7.8 .8 15.4 2.4 22.8C51.5 195.4 16 242.3 16 296c0 61.9 50.1 112 112 112h288c53 0 96-43 96-96 0-43.1-28.1-79.5-67-91.8z" />
+            <path fill="#ffffff" d="M256 192l-80 80h48v96h64v-96h48l-80-80z" />
+          </svg>
+        </div>
 
-  iconGrid.innerHTML = '';
-  features.forEach(f => {
-    if(f.label !== 'Logout' && !isFullAccess && (!loggedInUser.permissions || !loggedInUser.permissions.includes(f.label))) return;
+        <div class="pos-server-hub" title="Core Server">
+          <i class='bx bx-server'></i>
+        </div>
 
-    const card = document.createElement('div');
-    card.className = 'icon-card';
-    card.innerHTML = `<i class='${f.icon}'></i><span>${f.label}</span>`;
-    card.onclick = () => {
-      if(f.id === 'logout'){
-        handleLogout();
-      } else if(f.link){
-        openPopup(f.id, f.label, f.link, 'open');
+        <div class="eco-node node-database" title="Database SQL"><i class='bx bx-data'></i></div>
+        <div class="eco-node node-security" title="Security & Shield"><i class='bx bx-shield-quarter'></i></div>
+        <div class="eco-node node-customer" title="Customer Management"><i class='bx bxs-user-detail'></i></div>
+        <div class="eco-node node-userctrl" title="User Control"><i class='bx bxs-user-check'></i></div>
+        <div class="eco-node node-pos-term" title="POS Terminal"><i class='bx bx-desktop'></i></div>
+        <div class="eco-node node-mobile" title="Mobile App Ecosystem"><i class='bx bx-mobile-alt'></i></div>
+        <div class="eco-node node-api" title="API Gateway"><i class='bx bx-transfer-alt'></i></div>
+        <div class="eco-node node-analytics" title="Business Analytics"><i class='bx bx-pie-chart-alt-2'></i></div>
+        <div class="eco-node node-printer" title="Receipt Printer"><i class='bx bx-printer'></i></div>
+        <div class="eco-node node-help" title="Help & Support"><i class='bx bx-help-circle'></i></div>
+      </div>
+    </div>
+  </main>
+
+  <div id="popupManager"></div>
+  <div id="minimizedDock"
+    style="position: fixed; bottom: 15px; right: 15px; display: flex; flex-direction: column-reverse; gap: 8px; z-index: 10000; align-items: flex-end; pointer-events: none;">
+  </div>
+
+  <script>
+    const userDisplay = document.getElementById('userDisplay');
+    if (loggedInUser) userDisplay.textContent = loggedInUser.username;
+
+    // ইউজার প্রোফাইল ড্রপডাউন টগল করার ফাংশনালিটি
+    const userProfileBtn = document.getElementById('userProfileBtn');
+    const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+    userProfileBtn.onclick = (e) => {
+      e.stopPropagation();
+      userDropdownMenu.classList.toggle('show');
+    };
+
+    window.onclick = () => {
+      if (userDropdownMenu.classList.contains('show')) {
+        userDropdownMenu.classList.remove('show');
       }
     };
-    iconGrid.appendChild(card);
-  });
 
-  const openWindows = {};
-
-  function saveState() {
-    const stateObj = {};
-    for (let id in openWindows) {
-      stateObj[id] = {
-        label: openWindows[id].label,
-        link: openWindows[id].link,
-        status: openWindows[id].status
-      };
-    }
-    localStorage.setItem('tbdits_active_windows', JSON.stringify(stateObj));
-  }
-
-  function openPopup(id, label, link, status = 'open') {
-    if (openWindows[id]) {
-      openWindows[id].status = status;
-      if (status === 'open') {
-        openWindows[id].overlay.style.display = 'flex';
-        if (openWindows[id].dockItem) {
-          openWindows[id].dockItem.remove();
-          openWindows[id].dockItem = null;
-        }
-      } else {
-        openWindows[id].overlay.style.display = 'none';
-        createDockItem(id);
-      }
-      saveState();
-      return;
+    // লগআউট হ্যান্ডলার
+    function handleLogout() {
+      localStorage.removeItem('tbdits_active_windows');
+      localStorage.removeItem('tbdits_logged_in');
+      localStorage.removeItem('tbdits_user');
+      window.location.replace(targetRedirectLink);
     }
 
-    const overlay = document.createElement('div');
-    overlay.style.cssText = "position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; justify-content: center; align-items: center;";
+    document.getElementById('dropdownLogoutBtn').onclick = handleLogout;
 
-    const content = document.createElement('div');
-    content.style.cssText = "width: 100%; height: 100%; background: #e4ebf5; position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3);";
+    document.getElementById('changePasswordBtn').onclick = () => {
+      alert("Password change feature can be linked here!");
+    };
 
-    const topBar = document.createElement('div');
-    topBar.style.cssText = "height: 32px; background: #e4ebf5; border-bottom: 1px solid rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; box-shadow: 0px 2px 6px rgba(203, 205, 209, 0.4); z-index: 1000;";
+    // ব্রাউজার বা ট্যাব বন্ধ করতে গেলে বা কাটতে গেলে লগআউট কনফার্মেশন ও লগআউট ট্রিগার করার কোড
+    let isLoggingOutFromClose = false;
 
-    const titleSpan = document.createElement('span');
-    titleSpan.textContent = label;
-    titleSpan.style.cssText = "font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: #1e3a8a; letter-spacing: 0.5px;";
+    window.addEventListener('beforeunload', function (e) {
+      if (isLoggingOutFromClose) return;
 
-    const btnGroup = document.createElement('div');
-    btnGroup.style.cssText = "display: flex; gap: 6px;";
+      // ব্যবহারকারী যদি ট্যাব বা ব্রাউজার কেটে দিতে চায়, তবে লগআউট ডাটা মুছে ফেলার জন্য হ্যান্ডেল করা
+      handleLogout();
 
-    const minBtn = document.createElement('button');
-    minBtn.innerHTML = "<i class='bx bx-minus'></i>";
-    minBtn.title = "Minimize";
-    minBtn.style.cssText = "background: #e4ebf5; color: #1e3a8a; border: none; width: 22px; height: 22px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 5px #cbced1, -2px -2px 5px #ffffff; transition: all 0.2s;";
-    minBtn.onclick = () => minimizeWindow(id);
+      // ব্রাউজারের নিজস্ব অ্যালার্ট পপ-আপ দেখানোর জন্য
+      e.preventDefault();
+      e.returnValue = 'You are about to log out and close the tab. Do you want to leave?';
+      return e.returnValue;
+    });
 
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = "<i class='bx bx-x'></i>";
-    closeBtn.title = "Close";
-    closeBtn.style.cssText = "background: #e4ebf5; color: #ef4444; border: none; width: 22px; height: 22px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 5px #cbced1, -2px -2px 5px #ffffff; transition: all 0.2s;";
-    closeBtn.onclick = () => closeWindow(id);
+    const features = [
+      { id: 'reports', label: 'Sales Reports', icon: 'bx bxs-file', link: 'reports.html' },
+      { id: 'sales', label: 'Sales of Point', icon: 'bx bxs-cart', link: 'ColudPOS.html' },
+      { id: 'customers', label: 'Customers', icon: 'bx bxs-user', link: 'customers.html' },
+      { id: 'products', label: 'Products', icon: 'bx bxs-box', link: 'products.html' },
+      { id: 'user-permission', label: 'User Control', icon: 'bx bxs-user-check', link: 'UserControl.html' },
+      { id: 'inventory', label: 'Inventory', icon: 'bx bxs-data', link: 'inventory.html' },
+      { id: 'help', label: 'Help', icon: 'bx bxs-help-circle', link: 'help.html' },
+      { id: 'logout', label: 'Logout', icon: 'bx bxs-log-out-circle' }
+    ];
 
-    btnGroup.appendChild(minBtn);
-    btnGroup.appendChild(closeBtn);
-    topBar.appendChild(titleSpan);
-    topBar.appendChild(btnGroup);
+    const iconGrid = document.getElementById('iconGrid');
+    const popupManager = document.getElementById('popupManager');
+    const minimizedDock = document.getElementById('minimizedDock');
 
-    const iframe = document.createElement('iframe');
-    iframe.src = link;
-    iframe.style.cssText = "width:100%; flex: 1; border:none; background: #fff;";
+    const fullAccessUsers = ['jems'];
+    const isFullAccess = fullAccessUsers.includes(loggedInUser.username);
 
-    content.appendChild(topBar);
-    content.appendChild(iframe);
-    overlay.appendChild(content);
-    popupManager.appendChild(overlay);
-
-    openWindows[id] = { overlay: overlay, label: label, link: link, status: status, dockItem: null };
-
-    if (status === 'minimized') {
-      overlay.style.display = 'none';
-      createDockItem(id);
+    if (isFullAccess) {
+      iconGrid.classList.add('full-access');
     } else {
-      overlay.style.display = 'flex';
-    }
-    saveState();
-  }
-
-  function minimizeWindow(id) {
-    const win = openWindows[id];
-    if (!win) return;
-
-    win.overlay.style.display = 'none';
-    win.status = 'minimized';
-    createDockItem(id);
-    saveState();
-  }
-
-  function createDockItem(id) {
-    const win = openWindows[id];
-    if (!win) return;
-
-    if (win.dockItem) {
-      win.dockItem.remove();
+      iconGrid.classList.add('partial-access');
     }
 
-    const dockItem = document.createElement('div');
-    dockItem.style.cssText = "pointer-events: auto; background: #e4ebf5; color: #1e3a8a; padding: 8px 14px; border-radius: 10px; box-shadow: 4px 4px 10px #cbced1, -4px -4px 10px #ffffff; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 12px; border: 1px solid rgba(255,255,255,0.8); transition: all 0.2s;";
-    dockItem.innerHTML = `<i class='bx bx-window-alt' style="font-size: 15px; color: #275efe;"></i><span>${win.label}</span><i class='bx bx-expand' style="font-size: 13px; color: #627490; margin-left: 3px;"></i>`;
+    let activeWindowsState = JSON.parse(localStorage.getItem('tbdits_active_windows')) || {};
 
-    dockItem.onclick = () => {
-      win.overlay.style.display = 'flex';
-      win.status = 'open';
-      dockItem.remove();
-      win.dockItem = null;
+    iconGrid.innerHTML = '';
+    features.forEach(f => {
+      if (f.label !== 'Logout' && !isFullAccess && (!loggedInUser.permissions || !loggedInUser.permissions.includes(f.label))) return;
+
+      const card = document.createElement('div');
+      card.className = 'icon-card';
+      card.innerHTML = `<i class='${f.icon}'></i><span>${f.label}</span>`;
+      card.onclick = () => {
+        if (f.id === 'logout') {
+          isLoggingOutFromClose = true;
+          handleLogout();
+        } else if (f.link) {
+          openPopup(f.id, f.label, f.link, 'open');
+        }
+      };
+      iconGrid.appendChild(card);
+    });
+
+    const openWindows = {};
+
+    function saveState() {
+      const stateObj = {};
+      for (let id in openWindows) {
+        stateObj[id] = {
+          label: openWindows[id].label,
+          link: openWindows[id].link,
+          status: openWindows[id].status
+        };
+      }
+      localStorage.setItem('tbdits_active_windows', JSON.stringify(stateObj));
+    }
+
+    function openPopup(id, label, link, status = 'open') {
+      if (openWindows[id]) {
+        openWindows[id].status = status;
+        if (status === 'open') {
+          openWindows[id].overlay.style.display = 'flex';
+          if (openWindows[id].dockItem) {
+            openWindows[id].dockItem.remove();
+            openWindows[id].dockItem = null;
+          }
+        } else {
+          openWindows[id].overlay.style.display = 'none';
+          createDockItem(id);
+        }
+        saveState();
+        return;
+      }
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = "position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; justify-content: center; align-items: center;";
+
+      const content = document.createElement('div');
+      content.style.cssText = "width: 100%; height: 100%; background: #e4ebf5; position: relative; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.3);";
+
+      const topBar = document.createElement('div');
+      topBar.style.cssText = "height: 32px; background: #e4ebf5; border-bottom: 1px solid rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; box-shadow: 0px 2px 6px rgba(203, 205, 209, 0.4); z-index: 1000;";
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = label;
+      titleSpan.style.cssText = "font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: #1e3a8a; letter-spacing: 0.5px;";
+
+      const btnGroup = document.createElement('div');
+      btnGroup.style.cssText = "display: flex; gap: 6px;";
+
+      const minBtn = document.createElement('button');
+      minBtn.innerHTML = "<i class='bx bx-minus'></i>";
+      minBtn.title = "Minimize";
+      minBtn.style.cssText = "background: #e4ebf5; color: #1e3a8a; border: none; width: 22px; height: 22px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 5px #cbced1, -2px -2px 5px #ffffff; transition: all 0.2s;";
+      minBtn.onclick = () => minimizeWindow(id);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = "<i class='bx bx-x'></i>";
+      closeBtn.title = "Close";
+      closeBtn.style.cssText = "background: #e4ebf5; color: #ef4444; border: none; width: 22px; height: 22px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 5px #cbced1, -2px -2px 5px #ffffff; transition: all 0.2s;";
+      closeBtn.onclick = () => closeWindow(id);
+
+      btnGroup.appendChild(minBtn);
+      btnGroup.appendChild(closeBtn);
+      topBar.appendChild(titleSpan);
+      topBar.appendChild(btnGroup);
+
+      const iframe = document.createElement('iframe');
+      iframe.src = link;
+      iframe.style.cssText = "width:100%; flex: 1; border:none; background: #fff;";
+
+      content.appendChild(topBar);
+      content.appendChild(iframe);
+      overlay.appendChild(content);
+      popupManager.appendChild(overlay);
+
+      openWindows[id] = { overlay: overlay, label: label, link: link, status: status, dockItem: null };
+
+      if (status === 'minimized') {
+        overlay.style.display = 'none';
+        createDockItem(id);
+      } else {
+        overlay.style.display = 'flex';
+      }
       saveState();
-    };
-
-    minimizedDock.appendChild(dockItem);
-    win.dockItem = dockItem;
-  }
-
-  function closeWindow(id) {
-    const win = openWindows[id];
-    if (!win) return;
-
-    win.overlay.remove();
-    if (win.dockItem) {
-      win.dockItem.remove();
     }
-    delete openWindows[id];
-    saveState();
-  }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    if (activeWindowsState) {
-      for (let id in activeWindowsState) {
-        const item = activeWindowsState[id];
-        if(item.status === 'open' || item.status === 'minimized') {
-          openPopup(id, item.label, item.link, item.status);
+    function minimizeWindow(id) {
+      const win = openWindows[id];
+      if (!win) return;
+
+      win.overlay.style.display = 'none';
+      win.status = 'minimized';
+      createDockItem(id);
+      saveState();
+    }
+
+    function createDockItem(id) {
+      const win = openWindows[id];
+      if (!win) return;
+
+      if (win.dockItem) {
+        win.dockItem.remove();
+      }
+
+      const dockItem = document.createElement('div');
+      dockItem.style.cssText = "pointer-events: auto; background: #e4ebf5; color: #1e3a8a; padding: 8px 14px; border-radius: 10px; box-shadow: 4px 4px 10px #cbced1, -4px -4px 10px #ffffff; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 12px; border: 1px solid rgba(255,255,255,0.8); transition: all 0.2s;";
+      dockItem.innerHTML = `<i class='bx bx-window-alt' style="font-size: 15px; color: #275efe;"></i><span>${win.label}</span><i class='bx bx-expand' style="font-size: 13px; color: #627490; margin-left: 3px;"></i>`;
+
+      dockItem.onclick = () => {
+        win.overlay.style.display = 'flex';
+        win.status = 'open';
+        dockItem.remove();
+        win.dockItem = null;
+        saveState();
+      };
+
+      minimizedDock.appendChild(dockItem);
+      win.dockItem = dockItem;
+    }
+
+    function closeWindow(id) {
+      const win = openWindows[id];
+      if (!win) return;
+
+      win.overlay.remove();
+      if (win.dockItem) {
+        win.dockItem.remove();
+      }
+      delete openWindows[id];
+      saveState();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (activeWindowsState) {
+        for (let id in activeWindowsState) {
+          const item = activeWindowsState[id];
+          if (item.status === 'open' || item.status === 'minimized') {
+            openPopup(id, item.label, item.link, item.status);
+          }
         }
       }
-    }
-  });
-</script>
+    });
+  </script>
 
-<footer class="site-footer">
+  <footer class="site-footer">
     <div class="footer-left">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        <span>Smart POS</span>
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+      <span>Smart POS</span>
     </div>
     <div class="footer-right">
-        <div class="footer-item">
-            <i class="fa-solid fa-headset"></i>
-            <span>Need Help? Call: <strong>+880 9638665205</strong></span>
-        </div>
-        <div class="footer-item">
-            <i class="fa-solid fa-code-branch"></i>
-            <span>System by: <strong>Tech bd it solutions</strong></span>
-        </div>
-        <div class="footer-item">
-            <i class="fa-solid fa-globe"></i>
-            <span>Website: <a href="https://www-tbdits.github.io/techbditsolutions.com/" target="_blank" class="footer-link">www.techbditsolutions.com</a></span>
-        </div>
+      <div class="footer-item">
+        <i class="fa-solid fa-headset"></i>
+        <span>Need Help? Call: <strong>+880 9638665205</strong></span>
+      </div>
+      <div class="footer-item">
+        <i class="fa-solid fa-code-branch"></i>
+        <span>System by: <strong>Tech bd it solutions</strong></span>
+      </div>
+      <div class="footer-item">
+        <i class="fa-solid fa-globe"></i>
+        <span>Website: <a href="https://www-tbdits.github.io/techbditsolutions.com/" target="_blank"
+            class="footer-link">www.techbditsolutions.com</a></span>
+      </div>
     </div>
-</footer>
-
+  </footer>
 </body>
 </html>
