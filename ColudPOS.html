@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cloud Point of Sale</title>
+<title>Point of Sale</title>
 <style>0
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 20px 30px;
-  background: #2980b; 
+  background: #2980b;
   color: #2c3e50;
 }
 html, body {
@@ -158,9 +158,9 @@ html, body {
   }
 
   /* Summary Section */
-  #summary-section {
-  flex: 1 1 250px;
-  max-width: 250px;
+#summary-section {
+  flex: 1 1 200px;
+  max-width: 260px;
   background: white;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -194,7 +194,7 @@ footer {
   padding: 0px;              /* প্যাডিং */
   border-radius: 0;          /* কোন রাউন্ডেড কর্নার নেই */
   border: 1px solid #000;    /* কালো বর্ডার */
-  max-height: 334px;         /* ম্যাক্সিমাম হাইট ৪০০px */
+  max-height: 410px;         /* ম্যাক্সিমাম হাইট ৪০০px */
   overflow-y: auto;          /* ভার্টিক্যাল স্ক্রল */
   position: relative;        /* পজিশন রিলেটিভ */
 }
@@ -239,7 +239,7 @@ footer {
 .summary-row {
   display: flex;
   align-items: center;
-  margin-bottom: 15.3px;
+  margin-bottom: 25px;
 }
 
 .summary-row label {
@@ -1314,7 +1314,6 @@ if (printWindow) {
 </script>
 
 <!--  ✅⤵🔰Reprint Section  ✅⤵🔰-->
-<!--  ✅⤵🔰Reprint Section  ✅⤵🔰-->
 
 <button onclick="reprintInvoice()" style="
     background: #27ae60;
@@ -1397,6 +1396,8 @@ function addRowToTable(description, rate, qty) {
 
   const totalQtyElem = document.getElementById('totalQty');
   const totalAmountElem = document.getElementById('totalAmount');
+  const vatPercentInput = document.getElementById('vatInput');
+  const vatAmountElem = document.getElementById('vatAmount');
   const discountPercentInput = document.getElementById('discountPercent');
   const discountAmountElem = document.getElementById('discountAmount');
   const subTotalElem = document.getElementById('SubTotal');
@@ -1463,13 +1464,16 @@ generateInvoiceNumber();
     updateDiscountAndSubTotal();
   }
 
-  // ✅ Update Discount and Subtotal
+  // ✅ Update VAT, Discount and Subtotal
   function updateDiscountAndSubTotal() {
     const total = parseFloat(totalAmountElem.textContent) || 0;
+    const vatPercent = parseFloat(vatPercentInput.value) || 0;
+    const vatAmount = (total * vatPercent) / 100;
     const discountPercent = parseFloat(discountPercentInput.value) || 0;
     const discountAmount = (total * discountPercent) / 100;
-    const subTotal = total - discountAmount;
+    const subTotal = total + vatAmount - discountAmount;
 
+    vatAmountElem.textContent = vatAmount.toFixed(2);
     discountAmountElem.textContent = discountAmount.toFixed(2);
     subTotalElem.textContent = subTotal.toFixed(2);
   }
@@ -1539,7 +1543,8 @@ generateInvoiceNumber();
     }
   });
 
-  // ✅ Update discount/subtotal on input change
+  // ✅ Update VAT, discount/subtotal on input change
+  vatPercentInput.addEventListener('input', updateDiscountAndSubTotal);
   discountPercentInput.addEventListener('input', updateDiscountAndSubTotal);
 </script>
 <script>
