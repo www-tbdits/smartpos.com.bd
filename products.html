@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<header>Product Entry-1</header>
+<header>Product Entry</header>
 
 <div class="container">
   <div class="form-card">
@@ -59,11 +59,11 @@
 
     try {
       await addDoc(collection(db, "products"), productData);
-      alert("✅ Product successfully added to Firebase!");
+      alert("Product successfully added!");
       productForm.reset();
     } catch (err) {
       console.error("Firebase Error:", err);
-      alert("❌ Error adding product: " + err.message);
+      alert("Error adding product: " + err.message);
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = "Submit";
