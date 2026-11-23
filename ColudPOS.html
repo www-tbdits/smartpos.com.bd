@@ -4,16 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Point of Sale</title>
-<style>0
+<style>
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 20px 30px;
-  background: #2980b;
+  background: white;
   color: #2c3e50;
 }
 html, body {
   height: 100%;
-  overflow: hidden; /* এটা যোগ করো */
+  overflow: hidden;
 }
 
   #header-section {
@@ -23,7 +23,6 @@ html, body {
     padding-bottom:10px;
     margin-bottom: 30px;
   }
-  /*  ✅⤵🔰Left: Company info  ✅⤵🔰*/
 
   #company-login {
   flex: 1 1 auto;
@@ -37,10 +36,16 @@ html, body {
 #company-login h2 {
   font-size: 32px;
   font-weight: 800;
-  color: #0B3861; /* Dark blue tone */
+  color: #0B3861;
   margin: 0 0 8px 0;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+#company-login p {
+  margin: 2px 0;
+  font-size: 16px;
+  color: #2c3e50;
 }
 
 #company-login .address {
@@ -56,14 +61,13 @@ html, body {
   color: #2980b9;
 }
 
-/* ✅⤵🔰 Invoice Entry aligned right with label on left side  ✅⤵🔰*/
-
 #invoice-entry {
   flex: 1 1 320px;
   max-width: 350px;
   font-size: 14px;
-  padding-left: 40px; /* Pushes the section to the right */
+  padding-left: 40px;
   border-left: 1px solid #000;
+ font-family: 'Times New Roman', Times, serif;
 }
 
 .invoice-form-group {
@@ -73,7 +77,7 @@ html, body {
 }
 
 .invoice-form-group label {
-  min-width: 120px; /* Align labels */
+  min-width: 120px;
   font-weight: 600;
   margin-right: 10px;
   white-space: nowrap;
@@ -84,6 +88,7 @@ html, body {
   flex: 1;
   padding:4px 6px;
   font-size: 14px;
+  font-family: 'Times New Roman', Times, serif;
   border-radius: 4px;
   border: 1px solid #000;
   box-sizing: border-box;
@@ -102,22 +107,16 @@ html, body {
   cursor: pointer;
 }
 
-  /*  ✅⤵🔰Main container changed to flex-direction: column ✅⤵🔰 */
-
   #main-content {
     display: flex;
-    flex-direction: column; /* Change from row to column */
+    flex-direction: column;
     gap: 30px;
   }
-
-  /* ✅⤵🔰 Container for Products and Summary side by side ✅⤵🔰 */
 
   #products-summary {
     display: flex;
     gap: 4px;
   }
-
-  /* ✅⤵🔰 Products Table styles ✅⤵🔰 */
 
   #product-table-section {
     flex: 1 1 500px;
@@ -134,6 +133,7 @@ html, body {
   table {
     width:100%;
     border-collapse: collapse;
+   font-family: 'Times New Roman', Times, serif;
   }
   table th, table td {
     border: 1px solid #ddd;
@@ -157,7 +157,6 @@ html, body {
     background: #c0392b;
   }
 
-  /* Summary Section */
 #summary-section {
   flex: 1 1 200px;
   max-width: 260px;
@@ -166,6 +165,7 @@ html, body {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   border-radius: 5px;
   font-size: 15px;
+font-family: 'Times New Roman', Times, serif;
 }
 
 #summary-section h3 {
@@ -174,29 +174,65 @@ html, body {
   margin-bottom: 20px;
   text-align: center;
 }
-footer {
+
+/* Smart Footer Styling */
+#smart-footer {
   position: fixed;
   bottom: 0;
-  left: 20px; /* বাম থেকে ২০ পিক্সেল দূরে */
-  width: calc(100% - 40px); /* দুই পাশে মের্জিন রাখার জন্য */
-  background: #eee;
-  padding: 15px 20px;
-  border-top: 10px solid #ccc;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #0B3861 0%, #16324F 55%, #0f4c3a 100%);
+  color: #f8fafc;
+  padding: 7px 18px;
+  font-size: 14px;
+  font-family: 'Times New Roman', Times, serif;
+  border-top: 3px solid #27ae60;
+  box-shadow: 0 -3px 12px rgba(11, 56, 97, 0.18);
   box-sizing: border-box;
   z-index: 1000;
-  border-radius: 0px; /* চাইলে একটু rounded corner */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* 🟩 Updated product-table-section with border like invoice box */
+#smart-footer .footer-sep {
+  color: #1abc9c;
+  font-weight: 700;
+}
+
+#smart-footer .footer-badge {
+  background: rgba(26, 188, 156, 0.18);
+  border: 1px solid rgba(26, 188, 156, 0.45);
+  color: #a7f3d0;
+  padding: 1px 8px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#smart-footer a {
+  color: #2ecc71;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#smart-footer a:hover {
+  color: #a7f3d0;
+  text-decoration: underline;
+}
+
 #product-table-section {
-  flex: 1 1 500px;           /* ফ্লেক্স বেসিস এবং গ্রোউথ সেট */
-  background-color: #fff;    /* হোয়াইট ব্যাকগ্রাউন্ড */
-  padding: 0px;              /* প্যাডিং */
-  border-radius: 0;          /* কোন রাউন্ডেড কর্নার নেই */
-  border: 1px solid #000;    /* কালো বর্ডার */
-  max-height: 400px;         /* ম্যাক্সিমাম হাইট ৪০০px */
-  overflow-y: auto;          /* ভার্টিক্যাল স্ক্রল */
-  position: relative;        /* পজিশন রিলেটিভ */
+  flex: 1 1 500px;
+  background-color: #fff;
+  padding: 0px;
+  border-radius: 0;
+  border: 1px solid #000;
+  max-height: 400px;
+  overflow-y: auto;
+  position: relative;
 }
 
   #product-table-section thead th {
@@ -218,8 +254,6 @@ footer {
     text-align: center;
   }
 
-
-/* 🔹 Scroll Button Style */
 #scrollButton {
   position: absolute;
   right: 5px;
@@ -233,8 +267,6 @@ footer {
   border-radius: 4px;
   cursor: pointer;
 }
-
-/*  ✅⤵🔰Label + value field inline like input ✅⤵🔰 */
 
 .summary-row {
   display: flex;
@@ -267,17 +299,110 @@ footer {
   font-weight: 700;
 }
 
-/* ✅⤵🔰 Inputs remain styled normally ✅⤵🔰 */
-
 #summary-section input[type="number"] {
   width: 100%;
   padding: 6px 8px;
   font-size: 14px;
+font-family: 'Times New Roman', Times, serif;
   border-radius: 4px;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
 
+/* In-page Reprint Popup over the code */
+#reprintPopupOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 56, 97, 0.35);
+  z-index: 6000;
+  justify-content: center;
+  align-items: center;
+}
+
+#reprintPopupCard {
+  background: #ffffff;
+  color: #2c3e50;
+font-family: 'Times New Roman', Times, serif;
+  width: 340px;
+  padding: 16px 18px;
+  border: 1px solid #0B3861;
+  border-top: 4px solid #27ae60;
+  border-radius: 5px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+#reprintPopupCard h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0B3861;
+}
+
+#reprintRecentLine {
+  font-size: 13px;
+  margin-bottom: 10px;
+  padding: 6px 8px;
+  background: #f4f8fb;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  color: #2c3e50;
+}
+
+#reprintRecentValue {
+  font-weight: 700;
+  color: #27ae60;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#reprintNumberInput {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-family: 'Times New Roman', Times, serif;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.reprint-btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+#reprintGoBtn {
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#reprintGoBtn:hover {
+  background: #219150;
+}
+
+#reprintCloseBtn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#reprintCloseBtn:hover {
+  background: #c0392b;
+}
 </style>
 </head>
 <body>
@@ -289,7 +414,7 @@ footer {
   <!--  ✅⤵🔰Left side: Company info  ✅⤵🔰-->
 
 <div id="company-login" style="display: flex; align-items: center; gap: 15px;">
-  
+
   <!--  ✅⤵🔰Logo Image  ✅⤵🔰-->
   <div id="company-logo">
     <img src="images/PosLogo.png" alt=" " style="height: 100px;">
@@ -300,15 +425,15 @@ footer {
     <h2>TECH BD IT SOLUTIONS </h2>
     <p> Dhaka 1205, Bangladesh</p>
    <p> 09638665205 | +8801516-573873 |+8801323056735</p>
-    
+
 
 <!-- ✅  Date&Time ✅ -->
 
 <span id="time" style="
-  margin-left: 15px; 
-  font-family: monospace; 
-  font-size: 14px; 
-  color: white; 
+  margin-left: 15px;
+  font-family: monospace;
+  font-size: 14px;
+  color: white;
   background-color: red;
   padding: 4px 12px;
   border-radius: 0px;
@@ -318,10 +443,10 @@ footer {
 "></span>
 
 <span id="date" style="
-  margin-left: 5px; 
-  font-family: monospace; 
-  font-size: 14px; 
-  color: white; 
+  margin-left: 5px;
+  font-family: monospace;
+  font-size: 14px;
+  color: white;
   background-color: green;
   padding: 4px 8px;
   border-radius: 0px;
@@ -354,9 +479,6 @@ footer {
   updateClockDate();
 </script>
 
-</script>
-
-
   </div>
 </div>
 
@@ -370,7 +492,8 @@ footer {
 
   <div class="invoice-form-group">
     <label for="itemBarcode">Item / Barcode :</label>
-    <input type="text" id="itemBarcode" placeholder=" " />
+    <input type="text" id="itemBarcode" placeholder=" " list="firestoreProductList" autocomplete="off" />
+    <datalist id="firestoreProductList"></datalist>
   </div>
 
   <div class="invoice-form-group">
@@ -390,8 +513,6 @@ footer {
 </div>
 
   <style>
-
-  /*  ✅⤵🔰Container styling ✅⤵🔰 */
   #customer-info {
     max-width: 100%;
     background: white;
@@ -407,14 +528,13 @@ footer {
     margin-bottom: 10px;
   }
 
-  /*  ✅⤵🔰Row containing two fields ✅⤵🔰 */
   .customer-row {
     display: flex;
     gap: 40px;
     margin-bottom:2px;
+  font-family: 'Times New Roman', Times, serif;
   }
 
-  /*  ✅⤵🔰Label + input side-by-side ✅⤵🔰 */
   .form-group-horizontal {
     display: flex;
     align-items: center;
@@ -424,7 +544,7 @@ footer {
   .form-group-horizontal label {
     white-space: nowrap;
     margin-right: 10px;
-    min-width: 90px; /* Adjust label width as needed */
+    min-width: 90px;
     font-weight: 600;
   }
 
@@ -432,6 +552,7 @@ footer {
     flex: 1;
     padding: 3px 2px;
     font-size: 14px;
+font-family: 'Times New Roman', Times, serif;
     border-radius: 4px;
     border: 1px solid #000;
     box-sizing: border-box;
@@ -459,34 +580,29 @@ footer {
       <input type="text" id="customerAddress" placeholder="" />
     </div>
 
-<!-- Remarks Input Box: Single Line Fixed -->
-
-<div class="form-group-horizontal" style="margin-top: 10px; font-family: Arial, sans-serif;">
+<div class="form-group-horizontal" style="margin-top: 10px; font-family: 'Times New Roman', Times, serif, sans-serif;">
   <label for="remarks" style="display: block; font-weight: bold; margin-bottom: 3px;">Remarks:</label>
-  <textarea 
-    id="remarks" 
-    rows="1" 
-    placeholder=" " 
-    style="width: 100%; 
-           height: 25px; /* single line height */
-           padding: 4px; 
-           font-size: 15px; 
-           border: 1px solid #000; 
-           border-radius: 4px; 
-           box-sizing: border-box; 
-           resize: none; 
-           overflow: hidden;"> 
+  <textarea
+    id="remarks"
+    rows="1"
+    placeholder=" "
+    style="width: 100%;
+           height: 25px;
+           padding: 4px;
+           font-size: 15px;
+           border: 1px solid #000;
+           border-radius: 4px;
+           box-sizing: border-box;
+           resize: none;
+           overflow: hidden;">
   </textarea>
 </div>
   </div>
-    </div>
-  </div>
-</div>
 
   <!-- ✅⤵🔰 Container for Products and Summary side by side ✅⤵🔰 -->
 
   <div id="products-summary">
-<!-- Products Table --> <div id="product-table-section">
+    <div id="product-table-section">
       <table id="productTable">
         <thead>
           <tr>
@@ -499,7 +615,6 @@ footer {
           </tr>
         </thead>
         <tbody>
-          <!-- Product rows will be inserted here -->
         </tbody>
       </table>
     </div>
@@ -543,8 +658,6 @@ footer {
     <div id="SubTotal" class="value-box total">0.00</div>
   </div>
 
-
-<!--  ✅⤵🔰InvoicePrint Section & Payment Method section ✅⤵🔰-->
 <!--  ✅⤵🔰InvoicePrint Section & Payment Method section ✅⤵🔰-->
 
 <button onclick="openPaymentPopup()" style="
@@ -558,7 +671,38 @@ footer {
     margin-right: 10px;
   ">Print Invoice</button>
 
+<button onclick="reprintInvoice()" style="
+    background: #27ae60;
+    color: white;
+    padding: 5px 14px;
+    border: none;
+    border-radius: 0px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 108px;
+    text-align: center;
+    margin-bottom: 10px;
+  "> Reprint</button>
+</div>
+
+<!-- In-page Reprint Popup over the code -->
+<div id="reprintPopupOverlay">
+  <div id="reprintPopupCard">
+    <h4>Reprint Invoice</h4>
+    <div id="reprintRecentLine">
+      Recent Invoice No: <span id="reprintRecentValue" title="Click to use">N/A</span>
+    </div>
+    <input type="text" id="reprintNumberInput" placeholder="Enter Invoice Number" autocomplete="off" />
+    <div class="reprint-btn-row">
+      <button type="button" id="reprintGoBtn">Print</button>
+      <button type="button" id="reprintCloseBtn">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
+window.firebaseProducts = [];
+window.recentInvoiceNumber = '';
 
 function openPaymentPopup() {
  const width = 560;
@@ -778,7 +922,7 @@ function openPaymentPopup() {
             });
           })();
 
-          function confirmPayment() {
+          async function confirmPayment() {
             const payment = document.getElementById('paymentSelectValue').value;
             const cardNumber = document.getElementById('cardNumber').value.trim();
             const manualAmount = document.getElementById('manualAmount').value.trim();
@@ -788,7 +932,9 @@ function openPaymentPopup() {
               return;
             }
 
-            if (window.opener && typeof window.opener.printInvoice === 'function') {
+            if (window.opener && typeof window.opener.saveAndPrintInvoice === 'function') {
+              await window.opener.saveAndPrintInvoice(payment, cardNumber, manualAmount);
+            } else if (window.opener && typeof window.opener.printInvoice === 'function') {
               window.opener.printInvoice(payment, cardNumber, manualAmount);
             } else {
               console.warn('Opener printInvoice function not found.');
@@ -810,43 +956,40 @@ function openPaymentPopup() {
   }
 }
 
-function printInvoice(paymentMethod, cardNumber, manualAmount) {
-  const width = 600;
-  const height = 700;
-  const left = (screen.width / 2) - (width / 2);
-  const top = (screen.height / 2) - (height / 2);
-  const options = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`;
+function collectInvoicePayload(paymentMethod, cardNumber, manualAmount) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB');
+  const timeStr = now.toLocaleTimeString('en-GB', { hour12: false });
+  const invoiceDateCombined = `${dateStr} ${timeStr}`;
 
-  // ✅ Invoice & Customer Info
   const invoiceNumber = document.getElementById('invoiceNumber').value.trim() || 'N/A';
+  const customerId = document.getElementById('customerId').value.trim() || '';
   const customerName = document.getElementById('customerName').value.trim() || '';
   const customerMobile = document.getElementById('customerMobile').value.trim() || '';
   const customerAddress = document.getElementById('customerAddress').value.trim() || '';
+  const remarks = document.getElementById('remarks')?.value.trim() || '';
+  const inStock = Boolean(document.getElementById('InStock')?.checked);
 
-// ✅ Product Table Data with SL. NO
-const rowsData = [];
-const tableRows = document.querySelectorAll('#productTable tbody tr');
+  const rowsData = [];
+  const items = [];
+  const tableRows = document.querySelectorAll('#productTable tbody tr');
 
-tableRows.forEach(row => {
-  const description = row.querySelector('.description').textContent;
-  const qty = row.querySelector('.qty').textContent;
-  const rate = row.querySelector('.rate').textContent;
-  const amount = row.querySelector('.amount').textContent;
-  rowsData.push({ description, qty, rate, amount });
-});
+  tableRows.forEach((row, index) => {
+    const description = row.querySelector('.description').textContent;
+    const qty = row.querySelector('.qty').textContent;
+    const rate = row.querySelector('.rate').textContent;
+    const amount = row.querySelector('.amount').textContent;
 
-const rowsHTML = rowsData.map((r, index) => `
-  <tr>
-    <td>${index + 1}</td> <!-- SL. NO -->
-    <td>${r.description}</td>
-    <td>${r.qty}</td>
-    <td>${r.rate}</td>
-    <td>${r.amount}</td>
-  </tr>
-`).join('');
+    rowsData.push({ description, qty, rate, amount });
+    items.push({
+      slNo: index + 1,
+      description: description.trim(),
+      qty: parseInt(qty, 10) || 0,
+      rate: parseFloat(rate) || 0,
+      amount: parseFloat(amount) || 0
+    });
+  });
 
-
-  // ✅ Summary Section Data
   const totalQty = document.getElementById('totalQty').textContent;
   const totalAmount = document.getElementById('totalAmount').textContent;
   const vatPercent = document.getElementById('vatInput').value || 0;
@@ -855,16 +998,76 @@ const rowsHTML = rowsData.map((r, index) => `
   const discountAmount = document.getElementById('discountAmount').textContent;
   const subTotal = document.getElementById('SubTotal').textContent;
 
-<!--  ✅⤵🔰InvoicePrint Section  ✅⤵🔰-->
-  // ✅ HTML Template for Print Popup
+  const firestoreDoc = {
+    invoiceNumber,
+    customerId,
+    customerName,
+    customerMobile,
+    customerAddress,
+    date: dateStr,
+    time: timeStr,
+    invoiceDate: invoiceDateCombined,
+    totalQty: parseInt(totalQty, 10) || 0,
+    totalAmount: parseFloat(totalAmount) || 0,
+    vatPercent: parseFloat(vatPercent) || 0,
+    vatAmount: parseFloat(vatAmount) || 0,
+    discountPercent: parseFloat(discountPercent) || 0,
+    discountAmount: parseFloat(discountAmount) || 0,
+    subTotal: parseFloat(subTotal) || 0,
+    paymentSelectValue: paymentMethod || '',
+    cardNumber: cardNumber || '',
+    manualAmount: manualAmount !== '' ? (parseFloat(manualAmount) || 0) : (parseFloat(subTotal) || 0),
+    remarks,
+    inStock,
+    items,
+    createdAtMs: Date.now()
+  };
 
-  const invoiceContent = `
+  const viewData = {
+    invoiceNumber,
+    invoiceDate: invoiceDateCombined,
+    customerName,
+    customerMobile,
+    customerAddress,
+    paymentMethod,
+    cardNumber,
+    manualAmount,
+    remarks,
+    rowsData,
+    totalQty,
+    totalAmount,
+    vatPercent,
+    vatAmount,
+    discountPercent,
+    discountAmount,
+    subTotal
+  };
+
+  return { firestoreDoc, viewData };
+}
+
+function renderInvoiceHtml(view) {
+  const rowsHTML = (view.rowsData || []).map((r, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${r.description}</td>
+      <td>${r.qty}</td>
+      <td>${r.rate}</td>
+      <td>${r.amount}</td>
+    </tr>
+  `).join('');
+
+  const paymentMethod = view.paymentMethod || '';
+  const cardNumber = view.cardNumber || '';
+  const manualAmount = view.manualAmount || '';
+  const remarksText = view.remarks || '';
+  const invoiceDateText = view.invoiceDate || `${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString('en-GB', { hour12: false })}`;
+
+  return `
     <html>
       <head>
         <title>Invoice</title>
         <style>
-        
-/* 📝 Base Layout */
 
 body {
   font-family: 'Times New Roman', Times, serif;
@@ -913,12 +1116,10 @@ th, td {
   font-size: 14px;
 }
 
-/*  ✅⤵🔰 🧾POS Print Pages Styling  ✅⤵🔰 */
-
 @media print {
   @page {
-    size: auto;       /* A4 বা thermal printer — যা আছে সেটাই ব্যবহার করবে */
-    margin: 5mm;      /* thermal printer এর জন্য margin ছোট */
+    size: auto;
+    margin: 5mm;
   }
 @media print and (max-width: 80mm) {
   .header-80mm {
@@ -963,9 +1164,6 @@ th, td {
   }
 }
 
-/*  ✅⤵🔰 🧾A4 Pages Styling  ✅⤵🔰 */
-
-/* ✅ A4 print */
 @media print and (min-width: 500px) {
   @page {
     size: A4;
@@ -982,7 +1180,7 @@ th, td {
   body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Footer সবসময় নিচে */
+    min-height: 100vh;
   }
 
   table {
@@ -999,7 +1197,7 @@ th, td {
   }
 
   .summary {
-    margin-top: auto; /* Footer এর আগে সব content push */
+    margin-top: auto;
   }
 
   .footer {
@@ -1010,7 +1208,6 @@ th, td {
   }
 }
 
-/* ✅ 80mm thermal print - কোনো flex, natural flow */
 @media print and (max-width: 500px) {
   body {
     display: block;
@@ -1033,12 +1230,10 @@ th, td {
   }
 }
 
-
 </style>
       </head>
       <body>
 
-<!-- 🟦 A4 Header Version -->
 <div class="header-a4" style="
   display: flex;
   justify-content: space-between;
@@ -1047,7 +1242,6 @@ th, td {
   padding-bottom: 10px;
   margin-bottom: 15px;
 ">
-  <!-- Company Info -->
   <div style="flex: 1;">
     <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #000;">
       TECH BD IT SOLUTIONS
@@ -1063,14 +1257,11 @@ th, td {
       Email: info.techbditsolutions@gmail.com
     </p>
   </div>
-  <!-- Logo -->
   <div style="text-align: right;">
     <img src="images/PosLogo.png" alt="Company Logo" style="height: 100px;">
   </div>
 </div>
 
-
-<!-- 🟨 80mm Header Version -->
 <div class="header-80mm" style="
   text-align: center;
   font-family: 'Times New Roman', serif;
@@ -1087,18 +1278,15 @@ th, td {
     Elephant Road, Dhaka, Bangladesh<br>
     Call: 09638665205, +8801516-573873 +8801323056735<br>
       Web: www-tbdits.github.io/techbditsolutions.com Email: info.techbditsolutions@gmail.com<br>
-
   </div>
 </div>
 
-     <!--  ✅⤵🔰Print Invoice No and Date& time  ✅⤵🔰-->   
-
-    <div class="invoice-info">
+<div class="invoice-info">
   <p class="invoice-number">
-    <strong>Invoice No:</strong> ${invoiceNumber}
+    <strong>Invoice No:</strong> ${view.invoiceNumber || 'N/A'}
   </p>
   <p class="invoice-date">
-    <strong>Invoice Date:</strong> ${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString('en-GB', { hour12: false })}
+    <strong>Invoice Date:</strong> ${invoiceDateText}
   </p>
 </div>
 
@@ -1110,11 +1298,10 @@ th, td {
     font-weight: bold;
   }
 
-  /* 80mm thermal printer: এক লাইনে nicely aligned */
   @media print and (max-width: 80mm) {
     .invoice-info {
       display: flex;
-      justify-content: space-between; /* বাম-ডান alignment */
+      justify-content: space-between;
       align-items: center;
       width: 100%;
     }
@@ -1125,18 +1312,14 @@ th, td {
   }
 </style>
 
-
-        <!-- ✅⤵🔰Customer & Payment Info: Side by Side✅⤵🔰 -->
 <div class="invoice-info">
-  <!-- Left: Customer Info -->
   <div class="customer-info">
     <h3>INVOICE TO:</h3>
-    <p><strong>Name:</strong> ${customerName}</p>
-    <p><strong>Mobile:</strong> ${customerMobile}</p>
-    <p><strong>Address:</strong> ${customerAddress}</p>
+    <p><strong>Name:</strong> ${view.customerName || ''}</p>
+    <p><strong>Mobile:</strong> ${view.customerMobile || ''}</p>
+    <p><strong>Address:</strong> ${view.customerAddress || ''}</p>
   </div>
 
-  <!-- Right: Payment Info -->
   <div class="payment-info">
     <h3>PAYMENT INFORMATION</h3>
     <p>Mohammad Jems Ahmed </p>
@@ -1162,17 +1345,15 @@ th, td {
   text-align: right;
 }
 
-/* A4 প্রিন্ট */
 @media print and (min-width: 500px) {
   .invoice-info {
     flex-direction: row;
   }
   .payment-info {
-    font-size: 14px; /* normal font */
+    font-size: 14px;
   }
 }
 
-/* 80mm প্রিন্ট */
 @media print and (max-width: 500px) {
   .invoice-info {
     flex-direction: row;
@@ -1183,46 +1364,41 @@ th, td {
   .payment-info {
     width: 40%;
     text-align: right;
-    font-size: 10px; /* ছোট font 80mm এর জন্য */
+    font-size: 10px;
   }
 }
 </style>
 
+<table>
+  <thead>
+    <tr>
+      <th>Sl.No</th>
+      <th>Description</th>
+      <th>Qnt</th>
+      <th>Rate</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${rowsHTML}
+  </tbody>
+</table>
 
-        <!-- ✅⤵🔰Product Table ✅⤵🔰-->
-        <table>
-          <thead>
-            <tr>
-              <th>Sl.No</th>
-              <th>Description</th>
-              <th>Qnt</th>
-              <th>Rate</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rowsHTML}
-          </tbody>
-        </table>
-
-        <!-- ✅⤵🔰Summary Block ✅⤵🔰-->
-        <div class="summary">
-          <p><strong>Total Qty:</strong> ${totalQty}</p>
-          <p><strong>Total:</strong> ${totalAmount}৳</p>
-          <p><strong>VAT (%):</strong> ${vatPercent}%</p>
-          <p><strong>VAT Amount:</strong> ${vatAmount}৳</p>
-          <p><strong>Discount (%):</strong> ${discountPercent}%</p>
-          <p><strong>Discount Amount:</strong> ${discountAmount}৳</p>
-          <hr>
-          <p style="font-size: 16px;"><strong>Sub Total:</strong> ${subTotal}৳</p>
-        </div>
-
-       <!-- ✅⤵🔰Payment Info ✅⤵🔰-->
+<div class="summary">
+  <p><strong>Total Qty:</strong> ${view.totalQty}</p>
+  <p><strong>Total:</strong> ${view.totalAmount}৳</p>
+  <p><strong>VAT (%):</strong> ${view.vatPercent}%</p>
+  <p><strong>VAT Amount:</strong> ${view.vatAmount}৳</p>
+  <p><strong>Discount (%):</strong> ${view.discountPercent}%</p>
+  <p><strong>Discount Amount:</strong> ${view.discountAmount}৳</p>
+  <hr>
+  <p style="font-size: 16px;"><strong>Sub Total:</strong> ${view.subTotal}৳</p>
+</div>
 
 <div style="margin-top: 0px; font-size: 14px; padding: 0px; border: 0px solid; border-radius: 8px;">
   ${
-    (document.getElementById('remarks')?.value.trim() || '') 
-      ? `<p style="font-weight: bold; color: #000;">Remarks: ${document.getElementById('remarks').value}</p>` 
+    remarksText
+      ? `<p style="font-weight: bold; color: #000;">Remarks: ${remarksText}</p>`
       : ''
   }
   ${
@@ -1232,16 +1408,15 @@ th, td {
          ${manualAmount ? `<p><strong>Amount Paid:</strong> ৳${manualAmount}</p>` : ''}
          <p style="color: black; font-weight: bold; margin-top: 5px;">
            ${
-             paymentMethod === 'DUE' 
-             ? 'Payment is pending.' 
+             paymentMethod === 'DUE'
+             ? 'Payment is pending.'
              : 'Payment has been received.'
            }
          </p>
 
-         <!-- ✅ Thank You + Signature এক লাইনে -->
          <div class="thank-signature-line" style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
             <p style="color: black; font-weight: bold; margin: 0;">
-              Thank you For Service with Tech bd it Solutions.  
+              Thank you For Service with Tech bd it Solutions.
             </p>
             <div class="signature-block" style="text-align: center; width: 180px; margin-left: 10px;">
               <div style="border-top: 1px solid #000; width: 100%; margin-bottom: 5px;"></div>
@@ -1253,91 +1428,141 @@ th, td {
 </div>
 
 <style>
-  /* ✅ 80mm Thermal Print এ Signature ব্লক লুকাবে */
   @media print and (max-width: 80mm) {
     .signature-block {
       display: none !important;
     }
     .thank-signature-line {
-      justify-content: center !important; /* Signature না থাকলে Thank you center এ যাবে */
+      justify-content: center !important;
     }
   }
 </style>
 
-<!-- Footer: Single Line Company Info --> 
 <div style="margin-top: 8px; padding-top: 10px; border-top: 1px solid #000; font-size: 16px; text-align: center; color: #000000; font-family: 'Times New Roman', Times, serif; font-weight: bold;">
   <p style="margin: 0; font-weight: bold;">
     System By: Tech bd it solutions | Phone: 09638665205  +8801516-573873 | +8801323056735 | Email: info.techbditsolutions@gmail.com | www-tbdits.github.io/techbditsolutions.com | Elephant Road, Dhaka, Bangladesh.
   </p>
 </div>
 
-<script>
-          window.onload = function() { window.print(); }
-        <\/script>
       </body>
     </html>
   `;
+}
 
-const printWindow = window.open('', '', options);
-if (printWindow) {
-  printWindow.document.open();
-  printWindow.document.write(invoiceContent);
-  printWindow.document.close();
-  printWindow.focus();
+function openPrintPopup(invoiceContent, shouldReload = false) {
+  const width = 600;
+  const height = 700;
+  const left = (screen.width / 2) - (width / 2);
+  const top = (screen.height / 2) - (height / 2);
+  const options = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`;
 
-  let printConfirmed = false;
+  const printWindow = window.open('', '', options);
+  if (printWindow) {
+    printWindow.document.open();
+    printWindow.document.write(invoiceContent);
+    printWindow.document.close();
+    printWindow.focus();
 
-  // print event
-  printWindow.onafterprint = function() {
-    if (printConfirmed) {
-      printWindow.close();
-      window.location.reload(); // শুধু print confirm হলে
-    } else {
-      printWindow.close(); // cancel করলে close হবে
+    let printConfirmed = false;
+
+    printWindow.onafterprint = function() {
+      if (printConfirmed) {
+        printWindow.close();
+        if (shouldReload) {
+          window.location.reload();
+        }
+      } else {
+        printWindow.close();
+      }
+    };
+
+    printWindow.onload = function() {
+      setTimeout(() => {
+        printConfirmed = true;
+        printWindow.print();
+      }, 300);
+    };
+
+  } else {
+    alert('Popup blocked! Please allow popups for this site.');
+  }
+}
+
+function printInvoice(paymentMethod, cardNumber, manualAmount) {
+  const { viewData } = collectInvoicePayload(paymentMethod, cardNumber, manualAmount);
+  const invoiceContent = renderInvoiceHtml(viewData);
+  openPrintPopup(invoiceContent, true);
+}
+
+function reprintInvoice() {
+  const overlay = document.getElementById('reprintPopupOverlay');
+  const recentEl = document.getElementById('reprintRecentValue');
+  const inputEl = document.getElementById('reprintNumberInput');
+  const goBtn = document.getElementById('reprintGoBtn');
+  const closeBtn = document.getElementById('reprintCloseBtn');
+
+  const recentNo = window.recentInvoiceNumber || '';
+  recentEl.textContent = recentNo || 'N/A';
+  inputEl.value = recentNo;
+
+  overlay.style.display = 'flex';
+  inputEl.focus();
+  inputEl.select();
+
+  recentEl.onclick = function() {
+    if (window.recentInvoiceNumber) {
+      inputEl.value = window.recentInvoiceNumber;
+      inputEl.focus();
     }
   };
 
-  // wait for images to load before print
-  printWindow.onload = function() {
-    setTimeout(() => {
-      printConfirmed = true;
-      printWindow.print();
-    }, 300); // 0 থেকে 300ms delay করলে image load হয়ে যাবে
+  function closePopup() {
+    overlay.style.display = 'none';
+  }
+
+  async function runReprint() {
+    const val = inputEl.value.trim();
+    if (!val) {
+      alert('Please enter an Invoice Number.');
+      return;
+    }
+    closePopup();
+    if (typeof window.printInvoiceByNumberFromFirebase === 'function') {
+      await window.printInvoiceByNumberFromFirebase(val);
+    }
+  }
+
+  goBtn.onclick = runReprint;
+  closeBtn.onclick = closePopup;
+  inputEl.onkeydown = function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      runReprint();
+    } else if (e.key === 'Escape') {
+      closePopup();
+    }
   };
 
-} else {
-  alert('Popup blocked! Please allow popups for this site.');
-}
-
-
+  if (typeof window.refreshRecentInvoiceFromFirebase === 'function') {
+    window.refreshRecentInvoiceFromFirebase().then((latest) => {
+      if (latest) {
+        recentEl.textContent = latest;
+        if (!inputEl.value.trim()) {
+          inputEl.value = latest;
+        }
+      }
+    }).catch(() => {});
+  }
 }
 </script>
 
-<!--  ✅⤵🔰Reprint Section  ✅⤵🔰-->
-
-<button onclick="reprintInvoice()" style="
-    background: #27ae60;
-    color: white;
-    padding: 5px 14px;
-    border: none;
-    border-radius: 0px;
-    font-size: 18px;
-    cursor: pointer;
-    width: 108px;             /* বাটন বড় করা */
-    text-align: center;         /* টেক্সট center হবে */
-    margin-bottom: 10px;      /* নিচে spacing */
-  "> Reprint</button>
-</div>
-
 <style>
-  /* ছোট করে দেওয়া value-box */
   .value-box.small {
     font-size: 12px;
     padding: 3px 5px;
     min-width: 60px;
   }
 
-  /* summary-section h3 */
   #summary-section h3 {
     margin-bottom: 15px;
     text-align: center;
@@ -1347,23 +1572,11 @@ if (printWindow) {
 </style>
 
 <script>
-  function reprintInvoice() {
-    alert("Reprint feature is under development, or you can load last invoice from local storage.");
-    // ভবিষ্যতে এখানে localStorage থেকে আগের ইনভয়েস ডেটা নিয়ে প্রিন্ট ফাংশন তৈরি করতে পারেন।
-    // অথবা ব্যাকএন্ড থেকে ডেটা নিয়ে এসে শো করিয়ে প্রিন্ট করতে পারেন।
-  }
-</script>
-
-<script>
-// 🔸 Scroll to bottom of product table
 function scrollToBottom() {
   const section = document.getElementById('product-table-section');
   section.scrollTop = section.scrollHeight;
 }
 
-
-
-// ✅ Update inside add-row function
 function addRowToTable(description, rate, qty) {
   const amount = rate * qty;
   const tr = document.createElement('tr');
@@ -1380,15 +1593,15 @@ function addRowToTable(description, rate, qty) {
   productTableBody.appendChild(tr);
   tr.querySelector('.delete-btn').addEventListener('click', function (e) {
     deleteRow(e);
-    updateRowCount(); // ✅ Update count after delete
+    updateRowCount();
   });
 
   updateSummary();
-  updateRowCount(); // ✅ Update count after add
+  updateRowCount();
 }
 
-  // Get references
   const itemBarcodeInput = document.getElementById('itemBarcode');
+  const firestoreProductList = document.getElementById('firestoreProductList');
   const salePriceInput = document.getElementById('salePrice');
   const saleQtyInput = document.getElementById('saleQty');
   const invoiceNumberInput = document.getElementById('invoiceNumber');
@@ -1402,52 +1615,83 @@ function addRowToTable(description, rate, qty) {
   const discountAmountElem = document.getElementById('discountAmount');
   const subTotalElem = document.getElementById('SubTotal');
 
-<!--  ✅⤵🔰Auto-generate Invoice Number (Random + Timestamp  ✅⤵🔰-->
-<!--  ✅⤵🔰Auto-generate Invoice Number (Random + Timestamp  ✅⤵🔰-->
+let nextCustomerSerial = 1;
 
 function generateInvoiceNumber() {
   const now = new Date();
-  const yearShort = String(now.getFullYear()).slice(-2); // last 2 digits of year
-  const month = String(now.getMonth() + 1).padStart(2, '0'); // current month 01-12
+  const yearShort = String(now.getFullYear()).slice(-2);
+  const month = String(now.getMonth() + 1).padStart(2, '0');
   const invoiceNumberInput = document.getElementById('invoiceNumber');
 
-  // Custom Format: 24INV<YY>T BIS<MM>
   const inv = `24TBI S${yearShort}${month}`;
 
   invoiceNumberInput.value = inv;
 }
 
-// Run on page load
 generateInvoiceNumber();
 
-<!--  ✅⤵🔰Auto-generate CustomerID  ✅⤵🔰-->
+function setCustomerSerialNumber(serialNumber) {
+  const prefix = "24TBI S";
+  const now = new Date();
+  const yearShort = String(now.getFullYear()).slice(2);
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const serial2digit = String(serialNumber).padStart(2, '0');
+  document.getElementById("customerId").value = `${prefix}${yearShort}${month}${serial2digit}`;
+}
 
-   function generateCustomerID() {
-    const prefix = "24TBI S";
+function generateCustomerID() {
+  setCustomerSerialNumber(nextCustomerSerial);
+  nextCustomerSerial += 1;
+}
 
-    const now = new Date();
-    const yearShort = String(now.getFullYear()).slice(2); // 2025 → 25
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // 1 → 01
+generateCustomerID();
 
-    // 🔥 Auto Increase 2-digit number (local storage)
-    let serial = localStorage.getItem("tbiSerial");
+  window.populateProductDatalist = function(products) {
+    if (!firestoreProductList) return;
+    firestoreProductList.innerHTML = '';
+    (products || []).forEach(p => {
+      if (p.name) {
+        const optName = document.createElement('option');
+        optName.value = p.name;
+        firestoreProductList.appendChild(optName);
+      }
+      const code = p.barcode || p.productId || '';
+      if (code) {
+        const optCode = document.createElement('option');
+        optCode.value = code;
+        firestoreProductList.appendChild(optCode);
+      }
+    });
+  };
 
-    if (!serial) {
-      serial = 1;
-    } else {
-      serial = parseInt(serial) + 1;
-    }
+  function matchFirestoreProduct(queryText) {
+    const q = (queryText || '').trim().toLowerCase();
+    if (!q || !Array.isArray(window.firebaseProducts)) return null;
 
-    localStorage.setItem("tbiSerial", serial);
-    const serial2digit = String(serial).padStart(2, "0");
-    const finalID = `${prefix}${yearShort}${month}${serial2digit}`;
-    document.getElementById("customerId").value = finalID;
+    return window.firebaseProducts.find(p => {
+      const name = String(p.name || '').trim().toLowerCase();
+      const barcode = String(p.barcode || '').trim().toLowerCase();
+      const productId = String(p.productId || '').trim().toLowerCase();
+      const docId = String(p.id || '').trim().toLowerCase();
+      return name === q || barcode === q || productId === q || docId === q || name.includes(q);
+    }) || null;
   }
 
-  generateCustomerID();
+  function fillPriceFromProduct(product) {
+    if (!product) return;
+    if (product.price !== undefined && product.price !== null && !isNaN(Number(product.price))) {
+      salePriceInput.value = Number(product.price);
+    }
+  }
 
+  itemBarcodeInput.addEventListener('change', function() {
+    const found = matchFirestoreProduct(itemBarcodeInput.value);
+    if (found) {
+      if (found.name) itemBarcodeInput.value = found.name;
+      fillPriceFromProduct(found);
+    }
+  });
 
-  // ✅ Update Summary: Qty, Amount
   function updateSummary() {
     let totalQty = 0;
     let totalAmount = 0;
@@ -1464,7 +1708,6 @@ generateInvoiceNumber();
     updateDiscountAndSubTotal();
   }
 
-  // ✅ Update VAT, Discount and Subtotal
   function updateDiscountAndSubTotal() {
     const total = parseFloat(totalAmountElem.textContent) || 0;
     const vatPercent = parseFloat(vatPercentInput.value) || 0;
@@ -1478,7 +1721,6 @@ generateInvoiceNumber();
     subTotalElem.textContent = subTotal.toFixed(2);
   }
 
-  // ✅ Delete row
   function deleteRow(event) {
     const btn = event.target;
     const row = btn.closest('tr');
@@ -1486,10 +1728,14 @@ generateInvoiceNumber();
     updateSummary();
   }
 
-  // ✅ Keyboard navigation & double Enter on quantity
   itemBarcodeInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
+      const found = matchFirestoreProduct(itemBarcodeInput.value);
+      if (found) {
+        if (found.name) itemBarcodeInput.value = found.name;
+        fillPriceFromProduct(found);
+      }
       salePriceInput.focus();
     }
   });
@@ -1539,16 +1785,14 @@ generateInvoiceNumber();
         updateSummary();
       }
     } else {
-      qtyEnterCount = 0; // reset if any other key
+      qtyEnterCount = 0;
     }
   });
 
-  // ✅ Update VAT, discount/subtotal on input change
   vatPercentInput.addEventListener('input', updateDiscountAndSubTotal);
   discountPercentInput.addEventListener('input', updateDiscountAndSubTotal);
 </script>
 <script>
-  // 👉 Enter press: Summary Fields (VAT, Discount %)
   document.getElementById('vatInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -1559,12 +1803,10 @@ generateInvoiceNumber();
   document.getElementById('discountPercent').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      // Optional: Go to Customer ID field or anything else
       document.getElementById('customerId').focus();
     }
   });
 
-  // 👉 Enter press: Customer Info Fields (chain focus)
   document.getElementById('customerId').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -1589,38 +1831,157 @@ generateInvoiceNumber();
   document.getElementById('customerAddress').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      document.getElementById('itemBarcode').focus(); // goes back to item input
+      document.getElementById('itemBarcode').focus();
     }
   });
 </script>
 
+<script type="module">
+  import { db } from './assets/firebase-config.js';
+  import {
+    collection,
+    getDocs,
+    addDoc
+  } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
-<!-- 🔻 Simple One-Line Footer 🔻 -->
+  async function loadProductsFromFirestore() {
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      const products = [];
+      snap.forEach((docSnap) => {
+        products.push({
+          id: docSnap.id,
+          ...docSnap.data()
+        });
+      });
+      window.firebaseProducts = products;
+      if (typeof window.populateProductDatalist === 'function') {
+        window.populateProductDatalist(products);
+      }
+    } catch (err) {
+      console.error("Failed to load products:", err);
+    }
+  }
+
+  async function syncInvoicesFromFirestore() {
+    const snap = await getDocs(collection(db, "invoices"));
+    const allDocs = [];
+    snap.forEach((docSnap) => {
+      allDocs.push({
+        id: docSnap.id,
+        ...docSnap.data()
+      });
+    });
+
+    allDocs.sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
+
+    if (allDocs.length > 0) {
+      nextCustomerSerial = allDocs.length + 1;
+      setCustomerSerialNumber(nextCustomerSerial);
+      const latest = allDocs[allDocs.length - 1];
+      window.recentInvoiceNumber = latest.invoiceNumber || '';
+    }
+    return { allDocs, latestNo: window.recentInvoiceNumber };
+  }
+
+  loadProductsFromFirestore();
+  syncInvoicesFromFirestore().catch((err) => console.error("Failed to sync invoices:", err));
+
+  window.refreshRecentInvoiceFromFirebase = async function() {
+    const { latestNo } = await syncInvoicesFromFirestore();
+    return latestNo;
+  };
+
+  window.saveAndPrintInvoice = async function(paymentMethod, cardNumber, manualAmount) {
+    const { firestoreDoc, viewData } = collectInvoicePayload(paymentMethod, cardNumber, manualAmount);
+    const html = renderInvoiceHtml(viewData);
+
+    try {
+      await addDoc(collection(db, "invoices"), firestoreDoc);
+      window.recentInvoiceNumber = firestoreDoc.invoiceNumber;
+    } catch (err) {
+      console.error("Error saving invoice to Firestore:", err);
+      alert("Failed to save invoice to Firebase: " + err.message);
+    }
+
+    openPrintPopup(html, true);
+  };
+
+  window.printInvoiceByNumberFromFirebase = async function(queryValue) {
+    const target = String(queryValue || '').trim().toLowerCase();
+    if (!target) {
+      alert("Please enter an Invoice Number.");
+      return;
+    }
+
+    try {
+      const { allDocs } = await syncInvoicesFromFirestore();
+      let matchedDoc = null;
+
+      for (let i = allDocs.length - 1; i >= 0; i--) {
+        const d = allDocs[i] || {};
+        const invNo = String(d.invoiceNumber || '').trim().toLowerCase();
+        if (invNo === target) {
+          matchedDoc = d;
+          break;
+        }
+      }
+
+      if (!matchedDoc) {
+        alert(`No invoice found for Invoice Number "${queryValue.trim()}".`);
+        return;
+      }
+
+      const rowsData = (matchedDoc.items || []).map((item) => ({
+        description: item.description || '',
+        qty: item.qty ?? 0,
+        rate: Number(item.rate || 0).toFixed(2),
+        amount: Number(item.amount || 0).toFixed(2)
+      }));
+
+      const viewData = {
+        invoiceNumber: matchedDoc.invoiceNumber || 'N/A',
+        invoiceDate: matchedDoc.invoiceDate || `${matchedDoc.date || ''} ${matchedDoc.time || ''}`.trim(),
+        customerName: matchedDoc.customerName || '',
+        customerMobile: matchedDoc.customerMobile || '',
+        customerAddress: matchedDoc.customerAddress || '',
+        paymentMethod: matchedDoc.paymentSelectValue || '',
+        cardNumber: matchedDoc.cardNumber || '',
+        manualAmount: matchedDoc.manualAmount ?? '',
+        remarks: matchedDoc.remarks || '',
+        rowsData,
+        totalQty: matchedDoc.totalQty ?? 0,
+        totalAmount: Number(matchedDoc.totalAmount || 0).toFixed(2),
+        vatPercent: matchedDoc.vatPercent ?? 0,
+        vatAmount: Number(matchedDoc.vatAmount || 0).toFixed(2),
+        discountPercent: matchedDoc.discountPercent ?? 0,
+        discountAmount: Number(matchedDoc.discountAmount || 0).toFixed(2),
+        subTotal: Number(matchedDoc.subTotal || 0).toFixed(2)
+      };
+
+      const html = renderInvoiceHtml(viewData);
+      openPrintPopup(html, false);
+    } catch (err) {
+      console.error("Reprint error:", err);
+      alert("Failed to reprint invoice: " + err.message);
+    }
+  };
+</script>
+
+<!-- 🔻 Smart Footer 🔻 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-<footer style="
-  background: #2c3e50;
-  color: white;
-  padding: 4px 10px;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 5px;
-  border-top: 2px solid #27ae60;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-">
-  <span>System by: <strong>Tech BD IT Solutions</strong></span> | 
-  <span>Developed by: <strong>Md. Jems Ahmed Joy</strong></span> |
-  
-  <i class="fas fa-globe"></i> 
-  <a href="https://www-tbdits.github.io/techbditsolutions.com" target="_blank" style="
-    color: #1abc9c; 
-    text-decoration: none;
-  ">www.techbditsolutions.com</a> |
-  
-  <i class="fas fa-phone-alt"></i> 09638665205, +8801516-573873 , +8801323056735 |
-  
-  <i class="fas fa-map-marker-alt"></i> Dhaka-1205
+<footer id="smart-footer">
+  <span><i class="fas fa-layer-group" style="color:#1abc9c;"></i> System by: <strong>Tech BD IT Solutions</strong></span>
+  <span class="footer-sep">|</span>
+  <span><i class="fas fa-code" style="color:#1abc9c;"></i> Developed by: <strong>Md. Jems Ahmed Joy</strong></span>
+  <span class="footer-sep">|</span>
+  <span><i class="fas fa-globe"></i> <a href="https://www-tbdits.github.io/techbditsolutions.com" target="_blank">www.techbditsolutions.com</a></span>
+  <span class="footer-sep">|</span>
+  <span><i class="fas fa-phone-alt" style="color:#2ecc71;"></i> 09638665205, +8801516-573873, +8801323056735</span>
+  <span class="footer-sep">|</span>
+  <span class="footer-badge"><i class="fas fa-map-marker-alt"></i> Dhaka-1205</span>
 </footer>
+
+</body>
+</html>
