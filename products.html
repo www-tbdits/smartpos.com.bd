@@ -10,7 +10,7 @@
   .container { flex:1; display:flex; justify-content:center; align-items:center; padding:30px 10px; }
   .form-card { background:white; padding:25px; border-radius:15px; width:100%; max-width:420px; box-shadow:0 4px 15px rgba(0,0,0,0.08); }
   .form-card h2 { text-align:center; color:#3742a1; font-size:22px; margin-bottom:20px; }
-  .form-card input { width:100%; padding:12px; margin:8px 0 14px; border:1px solid #ccc; border-radius:8px; font-size:15px; }
+  .form-card input { width:100%; padding:12px; margin:8px 0 14px; border:1px solid #ccc; border-radius:8px; font-size:15px; box-sizing: border-box; }
   .form-card input:focus { outline:none; border-color:#3742a1; box-shadow:0 0 4px rgba(55,66,161,0.4); }
   .form-card button { width:100%; padding:12px; background:#3742a1; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
   .form-card button:hover { background:#2f358f; }
@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<header> Product Entry</header>
+<header>Product Entry</header>
 
 <div class="container">
   <div class="form-card">
@@ -28,51 +28,48 @@
     <form id="productForm">
       <input type="text" name="productName" placeholder="Product Name" required>
       <input type="text" name="category" placeholder="Category" required>
-      <input type="number" name="price" placeholder="Price" required>
+      <input type="number" name="price" placeholder="Price" step="0.01" required>
       <input type="number" name="stock" placeholder="Stock Quantity" required>
-      <button type="submit">Submit</button>
+      <button type="submit" id="submitBtn">Submit</button>
     </form>
     <a href="Quotation.html" class="back-btn">Create Quotation</a>
   </div>
 </div>
 
-<script>
-const productForm = document.getElementById('productForm');
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_w6flGKUA8L19ypt6jgsTLzPQGTFgso_n5niTfLyh3dD3dXuGEU1vCOp5lGeuI9Io/exec";
+<script type="module">
+  import { db } from './assets/firebase-config.js';
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-productForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(productForm);
-  const data = {
-    action: "addProduct",
-    product: {
-      name: formData.get('productName'),
-      category: formData.get('category'),
+  const productForm = document.getElementById('productForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  productForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving...";
+
+    const formData = new FormData(productForm);
+    const productData = {
+      name: formData.get('productName').trim(),
+      category: formData.get('category').trim(),
       price: Number(formData.get('price')),
-      stock: Number(formData.get('stock'))
-    }
-  };
+      stock: Number(formData.get('stock')),
+      createdAt: serverTimestamp()
+    };
 
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    if(result.success){
-      alert("✅ Product successfully added to Google Sheet!");
+    try {
+      await addDoc(collection(db, "products"), productData);
+      alert("✅ Product successfully added to Firebase!");
       productForm.reset();
-    } else {
-      alert("❌ Could not add product: " + (result.error || "Unknown error"));
+    } catch (err) {
+      console.error("Firebase Error:", err);
+      alert("❌ Error adding product: " + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit";
     }
-  } catch (err) {
-    console.error(err);
-    alert("❌ Something went wrong. Check Web App URL and deploy permissions.");
-  }
-});
+  });
 </script>
 
 </body>
 </html>
-
