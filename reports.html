@@ -168,8 +168,8 @@ button,input,select{font-family:inherit}
 
 .filters{
   display:grid;
-  grid-template-columns:repeat(5,minmax(130px,1fr)) auto;
-  gap:13px;
+  grid-template-columns:repeat(6,minmax(120px,1fr)) auto;
+  gap:12px;
   align-items:end;
 }
 
@@ -474,7 +474,7 @@ tbody tr:hover{
 
 /* RESPONSIVE */
 
-@media(max-width:1100px){
+@media(max-width:1200px){
   .filters{
     grid-template-columns:repeat(3,minmax(120px,1fr));
   }
@@ -556,6 +556,7 @@ tbody tr:hover{
     </div>
 
     <div class="header-right">
+      <button class="btn" onclick="exportExcel()">⬇ Export Excel</button>
       <button class="btn" onclick="resetFilters()">↺ Reset Filters</button>
     </div>
   </header>
@@ -566,6 +567,7 @@ tbody tr:hover{
 
     <div class="tabs" id="tabs">
       <button class="tab active" data-type="sales">Sales Report</button>
+      <button class="tab" data-type="productSales">Product-wise Sales</button>
       <button class="tab" data-type="quotations">Quotation Report</button>
       <button class="tab" data-type="purchases">Purchase Report</button>
       <button class="tab" data-type="salesReturns">Sales Return</button>
@@ -592,6 +594,13 @@ tbody tr:hover{
         <div class="field">
           <label>TO DATE</label>
           <input type="date" id="toDate">
+        </div>
+
+        <div class="field">
+          <label>PAYMENT METHOD</label>
+          <select id="paymentMethod">
+            <option value="">All Methods</option>
+          </select>
         </div>
 
         <div class="field">
@@ -696,6 +705,17 @@ const cfg = {
   metrics:["Total Invoices","Net Sales","Paid Amount","Due Amount"]
  },
 
+ productSales:{
+  title:"Product-wise Sales Report",
+  sub:"Item-wise sold quantity and total sales amount",
+  ref:"Item SL",
+  party:"Product Description",
+  date:"Last Sold Date",
+  amount:"Sales Amount",
+  statuses:["Sold"],
+  metrics:["Sold Products","Total Sold Qty","Total Sales Amount","Avg. Item Value"]
+ },
+
  quotations:{
   title:"Quotation Register",
   sub:"Quotation value and conversion status",
@@ -792,6 +812,7 @@ const cfg = {
 
 let data = {
  sales:[],
+ productSales:[],
  quotations:[],
  purchases:[],
  salesReturns:[],
@@ -802,6 +823,7 @@ let data = {
  profit:[]
 };
 
+let rawInvoices = [];
 let active = "sales";
 let filtered = [];
 
@@ -844,17 +866,129 @@ function formatIsoDate(raw){
 }
 
 /* ======================================
+   PRODUCT-WISE SALES BUILDER
+====================================== */
+
+function buildProductSalesFromInvoices(invoicesList){
+ const map = new Map();
+
+ (invoicesList || []).forEach(inv => {
+  const invDate = formatIsoDate(inv.date ?? inv.createdAt ?? inv.invoiceDate ?? inv.createdAtMs ?? "");
+  const payMethod = String(inv.paymentSelectValue ?? inv.paymentMethod ?? "").trim();
+  const counter = String(inv.counter ?? inv.counterName ?? inv.store ?? "").trim();
+  const user = String(inv.user ?? inv.cashier ?? inv.createdBy ?? "").trim();
+  const items = Array.isArray(inv.items) ? inv.items : [];
+
+  items.forEach(item => {
+   const desc = String(item.description || item.name || item.productName || "Unnamed Item").trim();
+   if(!desc) return;
+   const key = desc.toLowerCase();
+
+   const qty = Number(item.qty ?? item.quantity ?? 0) || 0;
+   const rate = Number(item.rate ?? item.price ?? 0) || 0;
+   const lineAmt = Number(item.amount ?? (qty * rate)) || 0;
+
+   if(!map.has(key)){
+    map.set(key, {
+     ref: "",
+     party: desc,
+     date: invDate,
+     quantity: 0,
+     rateSum: 0,
+     rateCount: 0,
+     amount: 0,
+     status: "Sold",
+     paymentMethod: payMethod,
+     counter,
+     user
+    });
+   }
+
+   const entry = map.get(key);
+   entry.quantity += qty;
+   entry.amount += lineAmt;
+   if(rate > 0){
+    entry.rateSum += rate;
+    entry.rateCount += 1;
+   }
+   if(invDate && (!entry.date || invDate >= entry.date)){
+    entry.date = invDate;
+   }
+   if(!entry.paymentMethod && payMethod) entry.paymentMethod = payMethod;
+   if(!entry.counter && counter) entry.counter = counter;
+   if(!entry.user && user) entry.user = user;
+  });
+ });
+
+ let sl = 1;
+ return Array.from(map.values()).map(item => {
+  const avgRate = item.rateCount > 0
+   ? (item.rateSum / item.rateCount)
+   : (item.quantity > 0 ? item.amount / item.quantity : 0);
+
+  return {
+   ref: String(sl++).padStart(2, "0"),
+   date: item.date,
+   party: item.party,
+   quantity: item.quantity,
+   avgRate: avgRate,
+   amount: item.amount,
+   status: item.status,
+   paymentMethod: item.paymentMethod,
+   counter: item.counter,
+   user: item.user,
+   due: 0,
+   cost: 0,
+   expense: 0
+  };
+ });
+}
+
+/* ======================================
    NORMALIZE POS & FIRESTORE DATA
 ====================================== */
 
 function normalize(r){
 
+ const totalAmt = Number(
+  r.amount ??
+  r.subTotal ??
+  r.totalAmount ??
+  r.total ??
+  r.grandTotal ??
+  r.netTotal ??
+  0
+ );
+
+ const payMethod = String(r.paymentMethod ?? r.paymentSelectValue ?? "").trim();
+
  let resolvedStatus = r.status;
- if(!resolvedStatus){
-  const pay = String(r.paymentSelectValue ?? r.paymentMethod ?? "").trim().toUpperCase();
-  if(pay === "DUE") resolvedStatus = "Due";
-  else if(pay) resolvedStatus = "Paid";
-  else resolvedStatus = "—";
+ let paidVal = 0;
+ let dueVal = 0;
+
+ if(payMethod.toUpperCase() === "DUE"){
+  if(!resolvedStatus) resolvedStatus = "Due";
+  dueVal = Number(r.due ?? r.dueAmount ?? totalAmt);
+  paidVal = Math.max(0, totalAmt - dueVal);
+ }else if(r.manualAmount !== undefined && r.manualAmount !== null && r.manualAmount !== ""){
+  const paidNum = Number(r.manualAmount) || 0;
+  paidVal = paidNum;
+  dueVal = Math.max(0, Number((totalAmt - paidNum).toFixed(2)));
+  if(!resolvedStatus){
+   if(dueVal > 0 && paidNum > 0) resolvedStatus = "Partial";
+   else if(dueVal > 0 && paidNum === 0) resolvedStatus = "Due";
+   else resolvedStatus = "Paid";
+  }
+ }else{
+  if(!resolvedStatus){
+   resolvedStatus = payMethod ? "Paid" : "—";
+  }
+  if(["Paid","Received","Processed","Approved","Converted"].includes(resolvedStatus)){
+   paidVal = totalAmt;
+  }else if(["Due","Unpaid","Pending","Partial"].includes(resolvedStatus)){
+   dueVal = Number(r.due ?? r.dueAmount ?? totalAmt);
+   paidVal = Math.max(0, totalAmt - dueVal);
+  }
  }
 
  const rawDate = r.date ?? r.createdAt ?? r.invoiceDate ?? r.createdAtMs ?? "";
@@ -885,18 +1019,13 @@ function normalize(r){
    r.productName ??
    "",
 
-  amount:Number(
-   r.amount ??
-   r.subTotal ??
-   r.totalAmount ??
-   r.total ??
-   r.grandTotal ??
-   r.netTotal ??
-   (Number(r.price || 0) * Number(r.stock ?? r.quantity ?? r.qty ?? 0)) ??
-   0
-  ),
+  amount: totalAmt,
+
+  paid: paidVal,
 
   status: resolvedStatus,
+
+  paymentMethod: payMethod,
 
   counter:
    r.counter ??
@@ -912,7 +1041,9 @@ function normalize(r){
 
   quantity:Number(r.quantity ?? r.qty ?? r.stock ?? r.totalQty ?? 0),
 
-  due:Number(r.due ?? r.dueAmount ?? 0),
+  avgRate:Number(r.avgRate ?? 0),
+
+  due: dueVal,
 
   cost:Number(r.cost ?? 0),
 
@@ -954,6 +1085,7 @@ function fillFilters(){
  const rows = data[active];
 
  for(const [id,key,label] of [
+  ["paymentMethod","paymentMethod","All Methods"],
   ["counter","counter","All Counters"],
   ["user","user","All Users"]
  ]){
@@ -998,14 +1130,35 @@ function getRows(){
 
  const from = document.getElementById("fromDate").value;
  const to = document.getElementById("toDate").value;
+ const payMethod = document.getElementById("paymentMethod").value;
  const counter = document.getElementById("counter").value;
  const user = document.getElementById("user").value;
  const status = document.getElementById("status").value;
 
+ if(active === "productSales" && (from || to || payMethod)){
+  const matchingInvoices = rawInvoices.filter(inv => {
+   const d = formatIsoDate(inv.date ?? inv.createdAt ?? inv.invoiceDate ?? inv.createdAtMs ?? "");
+   const pm = String(inv.paymentSelectValue ?? inv.paymentMethod ?? "").trim();
+   const ct = String(inv.counter ?? inv.counterName ?? inv.store ?? "").trim();
+   const us = String(inv.user ?? inv.cashier ?? inv.createdBy ?? "").trim();
+   return (
+    (!from || (d && d >= from)) &&
+    (!to || (d && d <= to)) &&
+    (!payMethod || pm === payMethod) &&
+    (!counter || ct === counter) &&
+    (!user || us === user)
+   );
+  });
+  return buildProductSalesFromInvoices(matchingInvoices).filter(r =>
+   (!status || r.status === status)
+  );
+ }
+
  return data[active].filter(r=>
 
-  (!from || r.date >= from) &&
-  (!to || r.date <= to) &&
+  (!from || (r.date && r.date >= from)) &&
+  (!to || (r.date && r.date <= to)) &&
+  (!payMethod || r.paymentMethod === payMethod) &&
   (!counter || r.counter === counter) &&
   (!user || r.user === user) &&
   (!status || r.status === status)
@@ -1048,17 +1201,21 @@ function renderSummary(){
 
  const sum = rows.reduce((a,r)=>a+r.amount,0);
 
- const paid = rows
-  .filter(r=>[
-   "Paid","Received","Processed","Approved","Converted"
-  ].includes(r.status))
-  .reduce((a,r)=>a+r.amount,0);
+ const paid = rows.reduce((a,r)=>{
+  if(typeof r.paid === "number" && r.paid > 0) return a + r.paid;
+  if(["Paid","Received","Processed","Approved","Converted"].includes(r.status)){
+   return a + r.amount;
+  }
+  return a;
+ },0);
 
- const due = rows
-  .filter(r=>[
-   "Due","Unpaid","Pending","Partial"
-  ].includes(r.status))
-  .reduce((a,r)=>a+(r.due || r.amount),0);
+ const due = rows.reduce((a,r)=>{
+  if(typeof r.due === "number" && r.due > 0) return a + r.due;
+  if(["Due","Unpaid","Pending","Partial"].includes(r.status)){
+   return a + r.amount;
+  }
+  return a;
+ },0);
 
  const cost = rows.reduce((a,r)=>a+r.cost,0);
 
@@ -1066,7 +1223,19 @@ function renderSummary(){
 
  let vals;
 
- if(active==="stock"){
+ if(active==="productSales"){
+
+  const totalSoldQty = rows.reduce((a,r)=>a+(r.quantity || 0),0);
+  const avgVal = rows.length ? (sum / rows.length) : 0;
+
+  vals=[
+   rows.length,
+   totalSoldQty,
+   money(sum),
+   money(avgVal)
+  ];
+
+ }else if(active==="stock"){
 
   vals=[
    rows.length,
@@ -1129,19 +1298,32 @@ function getColumns(){
 
  const c = cfg[active];
 
+ if(active==="productSales"){
+  return [
+   ["ref",c.ref],
+   ["party",c.party],
+   ["quantity","Sold Qty"],
+   ["avgRate","Avg. Rate"],
+   ["amount",c.amount],
+   ["date",c.date],
+   ["status","Status"]
+  ];
+ }
+
  let cols=[
   ["ref",c.ref],
   ["date",c.date],
   ["party",c.party],
   ["amount",c.amount],
   ["status","Status"],
+  ["paymentMethod","Payment"],
   ["counter","Counter"],
   ["user","User"]
  ];
 
  if(active==="stock"){
   cols=cols.filter(([k])=>
-   !["counter","user"].includes(k)
+   !["paymentMethod","counter","user"].includes(k)
   );
  }
 
@@ -1196,9 +1378,13 @@ function renderTable(){
 
      html += `<td class="ref">${esc(r[k])}</td>`;
 
-    }else if(k==="amount"){
+    }else if(k==="amount" || k==="avgRate"){
 
      html += `<td class="amount">${money(r[k])}</td>`;
+
+    }else if(k==="quantity"){
+
+     html += `<td><b>${esc(r[k])}</b></td>`;
 
     }else if(k==="status"){
 
@@ -1247,6 +1433,7 @@ function resetFilters(){
  [
   "fromDate",
   "toDate",
+  "paymentMethod",
   "counter",
   "user",
   "status",
@@ -1281,9 +1468,12 @@ function exportExcel(rows=filtered){
    </tr>
    ${rows.map(r=>`
     <tr>
-     ${cols.map(([k])=>
-      `<td>${esc(k==="amount"?Number(r[k]||0).toFixed(2):r[k])}</td>`
-     ).join("")}
+     ${cols.map(([k])=>{
+      if(k==="amount" || k==="avgRate"){
+       return `<td>${Number(r[k]||0).toFixed(2)}</td>`;
+      }
+      return `<td>${esc(r[k])}</td>`;
+     }).join("")}
     </tr>
    `).join("")}
    <tr>
@@ -1325,19 +1515,27 @@ function viewFilteredReport(){
 
  const total = rows.reduce((a,r)=>a+r.amount,0);
 
- const paid = rows
-  .filter(r=>["Paid","Received","Processed"].includes(r.status))
-  .reduce((a,r)=>a+r.amount,0);
+ const paid = rows.reduce((a,r)=>{
+  if(typeof r.paid === "number" && r.paid > 0) return a + r.paid;
+  if(["Paid","Received","Processed","Approved","Converted"].includes(r.status)){
+   return a + r.amount;
+  }
+  return a;
+ },0);
 
- const due = rows
-  .filter(r=>["Due","Unpaid","Pending","Partial"].includes(r.status))
-  .reduce((a,r)=>a+(r.due || r.amount),0);
+ const due = rows.reduce((a,r)=>{
+  if(typeof r.due === "number" && r.due > 0) return a + r.due;
+  if(["Due","Unpaid","Pending","Partial"].includes(r.status)){
+   return a + r.amount;
+  }
+  return a;
+ },0);
 
  const reportRows = rows.map(r=>`
   <tr>
    ${cols.map(([k])=>{
 
-    if(k==="amount"){
+    if(k==="amount" || k==="avgRate"){
      return `<td class="amount">${money(r[k])}</td>`;
     }
 
@@ -1667,6 +1865,10 @@ window.CloudPOSReports = {
 
  setData(input){
 
+  if(Array.isArray(input.sales)){
+   rawInvoices = input.sales;
+  }
+
   Object.keys(data).forEach(k=>{
 
    if(Array.isArray(input[k])){
@@ -1674,6 +1876,10 @@ window.CloudPOSReports = {
    }
 
   });
+
+  if(Array.isArray(input.sales) && !Array.isArray(input.productSales)){
+   data.productSales = buildProductSalesFromInvoices(input.sales);
+  }
 
   fillFilters();
   render();
@@ -1687,6 +1893,11 @@ window.CloudPOSReports = {
   }
 
   data[type].push(normalize(record));
+
+  if(type === "sales"){
+   rawInvoices.push(record);
+   data.productSales = buildProductSalesFromInvoices(rawInvoices);
+  }
 
   if(type===active){
    fillFilters();
@@ -1706,8 +1917,13 @@ window.CloudPOSReports = {
 
   if(type && data[type]){
    data[type]=[];
+   if(type === "sales"){
+    rawInvoices = [];
+    data.productSales = [];
+   }
   }else{
    Object.keys(data).forEach(k=>data[k]=[]);
+   rawInvoices = [];
   }
 
   fillFilters();
@@ -1789,6 +2005,7 @@ async function loadReportsFromFirestore(){
 
  window.CloudPOSReports.setData({
   sales: invoices,
+  productSales: buildProductSalesFromInvoices(invoices),
   stock: stockRows,
   quotations,
   purchases,
