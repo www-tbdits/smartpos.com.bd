@@ -198,7 +198,7 @@ table th {
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-} 
+}
 
 /* ATM Card Styles */
 .atmCard {
@@ -231,7 +231,7 @@ table th {
 }
 
 .atmCard .left h2::before {
-    content: "🛒"; /* shopping cart icon */
+    content: "🛒";
     font-size: 24px;
 }
 
@@ -381,9 +381,6 @@ table th {
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script>
-// ------------------- JavaScript -------------------
-
-// Countries & Bangladesh districts
 const countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
 "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
 "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
@@ -398,100 +395,117 @@ const countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "An
 "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal",
 "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
 "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar",
-"Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", 
+"Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
 "Saudi Arabia","Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
 "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
 "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
 "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
 "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"];
-const bdDistricts = ["Bagerhat", "Barguna", "Bhola", "Bogra", "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Chuadanga", "Comilla", "Cox's Bazar", 
-"Dinajpur", "Dhaka", "Faridpur", "Feni", "Gaibandha", "Gopalganj", "Habiganj", "Jessore", "Jhenaidah", "Joypurhat", "Kishoreganj", "Khagrachhari", "Kurigram", 
-"Kushtia", "Lalmonirhat", "Lakshmipur", "Madaripur", "Magura", "Manikganj", "Meherpur", "Munshiganj", "Moulvibazar", "Narayanganj", "Narail", "Narsingdi", "Natore", 
-"Naogaon", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur", 
+
+const bdDistricts = ["Bagerhat", "Barguna", "Bhola", "Bogra", "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Chuadanga", "Comilla", "Cox's Bazar",
+"Dinajpur", "Dhaka", "Faridpur", "Feni", "Gaibandha", "Gopalganj", "Habiganj", "Jessore", "Jhenaidah", "Joypurhat", "Kishoreganj", "Khagrachhari", "Kurigram",
+"Kushtia", "Lalmonirhat", "Lakshmipur", "Madaripur", "Magura", "Manikganj", "Meherpur", "Munshiganj", "Moulvibazar", "Narayanganj", "Narail", "Narsingdi", "Natore",
+"Naogaon", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur",
 "Sirajganj", "Sunamganj", "Sylhet", "Tangail"];
 
 const countrySelect = document.getElementById('country');
 const citySelect = document.getElementById('city');
-countries.forEach(c => countrySelect.add(new Option(c,c)));
-countrySelect.addEventListener('change', () => {
+countrySelect.add(new Option("Select", ""));
+countries.forEach(c => countrySelect.add(new Option(c, c)));
+
+function populateCitiesForCountry(selectedCountry, preselectedCity = "") {
     citySelect.innerHTML = '<option value="">Select</option>';
-    if(countrySelect.value==="Bangladesh") bdDistricts.forEach(d=>citySelect.add(new Option(d,d)));
-    else if(countrySelect.value!=="") citySelect.add(new Option("N/A","N/A"));
+    if (selectedCountry === "Bangladesh") {
+        bdDistricts.forEach(d => citySelect.add(new Option(d, d)));
+    } else if (selectedCountry !== "") {
+        citySelect.add(new Option("N/A", "N/A"));
+    }
+    if (preselectedCity) {
+        citySelect.value = preselectedCity;
+    }
+}
+
+countrySelect.addEventListener('change', () => {
+    populateCitiesForCountry(countrySelect.value);
 });
 
-// Discount Logic
 const customerTypeSelect = document.getElementById('customerType');
 const discountInput = document.getElementById('discount');
 customerTypeSelect.addEventListener('change', () => {
-    discountInput.value = customerTypeSelect.value==="Employee"?15:customerTypeSelect.value==="Membership"?5:"";
+    discountInput.value = customerTypeSelect.value === "Employee" ? 15 : customerTypeSelect.value === "Membership" ? 5 : "";
 });
 
-// Modal
 const modal = document.getElementById('customerModal');
-document.getElementById('openModalBtn').onclick = () => { modal.style.display='flex'; clearForm(); };
-document.querySelectorAll('#closeModalBtn,#closeModalBtn2').forEach(b=>b.onclick=()=>modal.style.display='none');
-window.onclick = e => { if(e.target===modal) modal.style.display='none'; };
+let editRow = null;
 
-function clearForm(){
-    document.querySelectorAll('#customerModal input,#customerModal select').forEach(i=>i.value='');
-    discountInput.value='';
-    citySelect.innerHTML='<option value="">Select</option>';
+document.getElementById('openModalBtn').onclick = () => {
+    editRow = null;
+    document.getElementById('modalTitle').textContent = "Add Customer";
+    clearForm();
+    modal.style.display = 'flex';
+};
+
+document.querySelectorAll('#closeModalBtn,#closeModalBtn2').forEach(b => b.onclick = () => modal.style.display = 'none');
+window.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+
+function clearForm() {
+    document.querySelectorAll('#customerModal input,#customerModal select').forEach(i => i.value = '');
+    discountInput.value = '';
+    citySelect.innerHTML = '<option value="">Select</option>';
 }
 
-function validateForm(){
-    const req=['customerType','gender','firstName','contact','store','country','city','status'];
-    return req.every(id=>document.getElementById(id).value.trim()!=='');
+function validateForm() {
+    const req = ['customerType', 'gender', 'firstName', 'contact', 'store', 'country', 'city', 'status'];
+    return req.every(id => document.getElementById(id).value.trim() !== '');
 }
 
 const tableBody = document.querySelector('#customerTable tbody');
-let editRow = null;
 
-function saveToLocalStorage(){
-    const data = Array.from(tableBody.rows).map(r => Array.from(r.cells).slice(1,15).map(c => c.textContent));
-    localStorage.setItem('customers', JSON.stringify(data));
+function updateSL() {
+    Array.from(tableBody.rows).forEach((r, i) => r.cells[0].textContent = i + 1);
 }
 
-function loadFromLocalStorage(){
-    const customers = JSON.parse(localStorage.getItem('customers') || '[]');
-    customers.forEach(data => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td></td>${data.map(d=>`<td>${d}</td>`).join('')}
-        <td class="actions">
-            <button class="action-btn">Actions</button>
-            <div class="action-menu">
-                <button class="edit-btn">Edit</button>
-                <button class="print-btn">Print Card</button>
-                <button class="delete-btn">Delete</button>
-            </div>
-        </td>`;
-        tableBody.appendChild(row);
-        addRowListeners(row);
-    });
-    updateSL();
-}
-
-function updateSL(){ Array.from(tableBody.rows).forEach((r,i)=>r.cells[0].textContent=i+1); }
-
-function addRowListeners(row){
+function addRowListeners(row) {
     const actionBtn = row.querySelector('.action-btn');
     const menu = row.querySelector('.action-menu');
-    actionBtn.onclick = () => { menu.style.display = menu.style.display==='flex'?'none':'flex'; };
-
-    row.querySelector('.edit-btn').onclick = () => {
-        editRow=row;
-        document.getElementById('modalTitle').textContent="Edit Customer";
-        const ids = ['customerType','contact','cardNo','firstName','lastName','email','gender','address','city','country','shippingAddress','discount','store','status'];
-        ids.forEach((id,i)=>document.getElementById(id).value=row.cells[i+1].textContent);
-        if(document.getElementById('country').value==="Bangladesh") countrySelect.dispatchEvent(new Event('change'));
-        modal.style.display='flex';
-        menu.style.display='none';
+    actionBtn.onclick = (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.action-menu').forEach(m => { if (m !== menu) m.style.display = 'none'; });
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     };
 
-    row.querySelector('.delete-btn').onclick = () => { if(confirm('Delete this customer?')){ row.remove(); saveToLocalStorage(); updateSL(); } };
+    row.querySelector('.edit-btn').onclick = () => {
+        editRow = row;
+        document.getElementById('modalTitle').textContent = "Edit Customer";
+        const ids = ['customerType', 'contact', 'cardNo', 'firstName', 'lastName', 'email', 'gender', 'address', 'city', 'country', 'shippingAddress', 'discount', 'store', 'status'];
+        const values = ids.map((_, i) => row.cells[i + 1].textContent);
+        const savedCountry = values[9];
+        const savedCity = values[8];
+
+        ids.forEach((id, i) => {
+            if (id !== 'city') {
+                document.getElementById(id).value = values[i];
+            }
+        });
+        populateCitiesForCountry(savedCountry, savedCity);
+        modal.style.display = 'flex';
+        menu.style.display = 'none';
+    };
+
+    row.querySelector('.delete-btn').onclick = async () => {
+        if (!confirm('Delete this customer?')) return;
+        const docId = row.dataset.docId;
+        if (docId && typeof window.deleteCustomerFromFirestore === 'function') {
+            await window.deleteCustomerFromFirestore(docId);
+        }
+        row.remove();
+        updateSL();
+    };
 
     row.querySelector('.print-btn').onclick = () => {
         const c = row.cells;
-        const uniqueId = "CUST-" + String(Date.now()).slice(-6);
+        const cardNoText = c[3].textContent.trim();
+        const uniqueId = cardNoText || ("CUST-" + String(Date.now()).slice(-6));
 
         const cardHTML = `
         <div class="atmCard">
@@ -532,29 +546,102 @@ function addRowListeners(row){
     };
 }
 
-document.getElementById('saveCustomerBtn').onclick = () => {
-    if(!validateForm()){ alert('Fill all required fields!'); return; }
-    const fields=['customerType','contact','cardNo','firstName','lastName','email','gender','address','city','country','shippingAddress','discount','store','status'];
-    const data = fields.map(id=>document.getElementById(id).value);
-    let row;
-    if(editRow){
-        Array.from(editRow.cells).slice(1,15).forEach((c,i)=>c.textContent=data[i]);
-        editRow=null;
-    } else {
-        row=document.createElement('tr');
-        row.innerHTML = `<td></td>${data.map(d=>`<td>${d}</td>`).join('')}
-        <td class="actions">
-            <button class="action-btn">Actions</button>
-            <div class="action-menu">
-                <button class="edit-btn">Edit</button>
-                <button class="print-btn">Print Card</button>
-                <button class="delete-btn">Delete</button>
-            </div>
-        </td>`;
-        tableBody.appendChild(row);
-        addRowListeners(row);
+function appendCustomerRow(data, docId = '') {
+    const row = document.createElement('tr');
+    if (docId) row.dataset.docId = docId;
+    row.innerHTML = `<td></td>${data.map(d => `<td>${d ?? ''}</td>`).join('')}
+    <td class="actions">
+        <button class="action-btn">Actions</button>
+        <div class="action-menu">
+            <button class="edit-btn">Edit</button>
+            <button class="print-btn">Print Card</button>
+            <button class="delete-btn">Delete</button>
+        </div>
+    </td>`;
+    tableBody.appendChild(row);
+    addRowListeners(row);
+    updateSL();
+    return row;
+}
+
+window.renderCustomersFromFirestore = function(customers) {
+    tableBody.innerHTML = '';
+    (customers || []).forEach((item) => {
+        const rowData = [
+            item.customerType || '',
+            item.contact || '',
+            item.cardNo || '',
+            item.firstName || '',
+            item.lastName || '',
+            item.email || '',
+            item.gender || '',
+            item.address || '',
+            item.city || '',
+            item.country || '',
+            item.shippingAddress || '',
+            item.discount ?? '',
+            item.store || '',
+            item.status || ''
+        ];
+        appendCustomerRow(rowData, item.id || '');
+    });
+    updateSL();
+};
+
+document.getElementById('saveCustomerBtn').onclick = async () => {
+    if (!validateForm()) {
+        alert('Fill all required fields!');
+        return;
     }
-    updateSL(); saveToLocalStorage(); modal.style.display='none'; clearForm();
+
+    const fields = ['customerType', 'contact', 'cardNo', 'firstName', 'lastName', 'email', 'gender', 'address', 'city', 'country', 'shippingAddress', 'discount', 'store', 'status'];
+    const data = fields.map(id => document.getElementById(id).value.trim());
+
+    if (!data[2]) {
+        data[2] = "CUST-" + String(Date.now()).slice(-6);
+    }
+
+    const payload = {
+        customerType: data[0],
+        contact: data[1],
+        cardNo: data[2],
+        firstName: data[3],
+        lastName: data[4],
+        email: data[5],
+        gender: data[6],
+        address: data[7],
+        city: data[8],
+        country: data[9],
+        shippingAddress: data[10],
+        discount: data[11] !== '' ? Number(data[11]) : '',
+        store: data[12],
+        status: data[13],
+        updatedAtMs: Date.now()
+    };
+
+    try {
+        if (editRow) {
+            const docId = editRow.dataset.docId;
+            if (docId && typeof window.updateCustomerInFirestore === 'function') {
+                await window.updateCustomerInFirestore(docId, payload);
+            }
+            Array.from(editRow.cells).slice(1, 15).forEach((c, i) => c.textContent = data[i]);
+            editRow = null;
+        } else {
+            payload.createdAtMs = Date.now();
+            let newDocId = '';
+            if (typeof window.saveCustomerToFirestore === 'function') {
+                newDocId = await window.saveCustomerToFirestore(payload);
+            }
+            appendCustomerRow(data, newDocId);
+        }
+        updateSL();
+        modal.style.display = 'none';
+        clearForm();
+    } catch (err) {
+        console.error("Failed to save customer:", err);
+        alert("Failed to save customer to Firebase: " + err.message);
+    }
 };
 
 document.getElementById('searchInput').addEventListener('keyup', () => {
@@ -564,9 +651,56 @@ document.getElementById('searchInput').addEventListener('keyup', () => {
     });
 });
 
-window.addEventListener('DOMContentLoaded', loadFromLocalStorage);
+document.addEventListener('click', () => {
+    document.querySelectorAll('.action-menu').forEach(m => m.style.display = 'none');
+});
+</script>
+
+<script type="module">
+import { db } from './assets/firebase-config.js';
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+async function loadCustomersFromFirestore() {
+    try {
+        const snap = await getDocs(collection(db, "customers"));
+        const list = [];
+        snap.forEach((docSnap) => {
+            list.push({
+                id: docSnap.id,
+                ...docSnap.data()
+            });
+        });
+        list.sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
+        if (typeof window.renderCustomersFromFirestore === 'function') {
+            window.renderCustomersFromFirestore(list);
+        }
+    } catch (err) {
+        console.error("Error loading customers:", err);
+    }
+}
+
+window.saveCustomerToFirestore = async function(payload) {
+    const docRef = await addDoc(collection(db, "customers"), payload);
+    return docRef.id;
+};
+
+window.updateCustomerInFirestore = async function(docId, payload) {
+    await updateDoc(doc(db, "customers"), docId, payload);
+};
+
+window.deleteCustomerFromFirestore = async function(docId) {
+    await deleteDoc(doc(db, "customers"), docId);
+};
+
+window.addEventListener('DOMContentLoaded', loadCustomersFromFirestore);
 </script>
 
 </body>
 </html>
-
