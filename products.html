@@ -3,19 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Entry</title>
+<title>Product Entry & Inventory</title>
 <style>
-  body { font-family: "Times New Roman", Times, serif; background:#f2f3f5; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; }
-  header { background:#3742a1; color:white; padding:15px; text-align:center; font-size:50px; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
-  .container { flex:1; display:flex; justify-content:center; align-items:center; padding:30px 10px; }
-  .form-card { background:white; padding:25px; border-radius:15px; width:100%; max-width:420px; box-shadow:0 4px 15px rgba(0,0,0,0.08); }
-  .form-card h2 { text-align:center; color:#3742a1; font-size:22px; margin-bottom:20px; }
-  .form-card input { width:100%; padding:12px; margin:8px 0 14px; border:1px solid #ccc; border-radius:8px; font-size:15px; box-sizing: border-box; }
-  .form-card input:focus { outline:none; border-color:#3742a1; box-shadow:0 0 4px rgba(55,66,161,0.4); }
-  .form-card button { width:100%; padding:12px; background:#3742a1; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
-  .form-card button:hover { background:#2f358f; }
-  .back-btn { display:inline-block; margin-top:15px; text-align:center; width:100%; color:#3742a1; text-decoration:none; font-weight:500; }
-  .back-btn:hover { color:#2f358f; text-decoration:underline; }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    background: #f2f3f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #1f2937;
+  }
+
+  header {
+    background: #3742a1;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .container {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px 15px 40px;
+    box-sizing: border-box;
+  }
+
+  .top-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    background: #3742a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover {
+    background: #2f358f;
+  }
+
+  .btn-green {
+    background: #15803d;
+  }
+
+  .btn-green:hover {
+    background: #166534;
+  }
+
+  .btn-outline {
+    background: #ffffff;
+    color: #3742a1;
+    border: 1px solid #3742a1;
+  }
+
+  .btn-outline:hover {
+    background: #eef2ff;
+  }
+
+  .btn-danger {
+    background: #dc2626;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+
+  .btn-danger:hover {
+    background: #b91c1c;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .summary-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border-left: 5px solid #3742a1;
+  }
+
+  .summary-box span {
+    display: block;
+    font-size: 15px;
+    color: #4b5563;
+  }
+
+  .summary-box strong {
+    display: block;
+    font-size: 24px;
+    color: #3742a1;
+    margin-top: 6px;
+  }
+
+  .products-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .card-header-row h2 {
+    margin: 0;
+    color: #3742a1;
+    font-size: 24px;
+  }
+
+  .search-input {
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    min-width: 240px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #3742a1;
+  }
+
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  th, td {
+    border: 1px solid #d1d5db;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 16px;
+  }
+
+  th {
+    background: #3742a1;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) td {
+    background: #f9fafb;
+  }
+
+  .num-col {
+    text-align: right;
+  }
+
+  tfoot td {
+    background: #eef2ff !important;
+    font-weight: bold;
+    font-size: 17px;
+  }
+
+  /* Add Product Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .form-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .form-card h2 {
+    text-align: center;
+    color: #3742a1;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .form-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  .form-card input:focus {
+    outline: none;
+    border-color: #3742a1;
+    box-shadow: 0 0 4px rgba(55,66,161,0.4);
+  }
+
+  .form-card button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: #3742a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .form-card button[type="submit"]:hover {
+    background: #2f358f;
+  }
+
+  @media (max-width: 768px) {
+    header { font-size: 30px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .search-input { width: 100%; min-width: 0; }
+  }
 </style>
 </head>
 <body>
@@ -23,25 +293,366 @@
 <header>Product Entry</header>
 
 <div class="container">
+  <div class="top-toolbar">
+    <div class="toolbar-actions">
+      <button type="button" class="btn" id="openAddModalBtn">➕ Add Product</button>
+      <button type="button" class="btn btn-outline" id="viewReportBtn">📄 View Report</button>
+      <button type="button" class="btn btn-green" id="downloadReportBtn">⬇ Download Report</button>
+    </div>
+    <a href="Quotation.html" class="btn btn-outline">Create Quotation</a>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-box">
+      <span>Total Products</span>
+      <strong id="totalProductsCount">0</strong>
+    </div>
+    <div class="summary-box">
+      <span>Total Stock Qty</span>
+      <strong id="totalStockQty">0</strong>
+    </div>
+    <div class="summary-box">
+      <span>Total Stock Value</span>
+      <strong id="totalStockValue">0.00</strong>
+    </div>
+  </div>
+
+  <div class="products-card">
+    <div class="card-header-row">
+      <h2>Added Products List</h2>
+      <input type="text" id="productSearch" class="search-input" placeholder="Search product or category...">
+    </div>
+
+    <div class="table-wrap">
+      <table id="productsTable">
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th class="num-col">Price</th>
+            <th class="num-col">Stock Qty</th>
+            <th class="num-col">Total Value</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="productsTableBody">
+          <tr>
+            <td colspan="7" style="text-align:center; padding:20px;">Loading products...</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">Grand Total</td>
+            <td class="num-col" id="footTotalQty">0</td>
+            <td class="num-col" id="footTotalValue">0.00</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal-overlay" id="addProductModal">
   <div class="form-card">
+    <button type="button" class="close-modal" id="closeAddModalBtn">&times;</button>
     <h2>Add New Product</h2>
     <form id="productForm">
       <input type="text" name="productName" placeholder="Product Name" required>
       <input type="text" name="category" placeholder="Category" required>
-      <input type="number" name="price" placeholder="Price" step="0.01" required>
-      <input type="number" name="stock" placeholder="Stock Quantity" required>
+      <input type="number" name="price" placeholder="Price" step="0.01" min="0" required>
+      <input type="number" name="stock" placeholder="Stock Quantity" step="1" min="0" required>
       <button type="submit" id="submitBtn">Submit</button>
     </form>
-    <a href="Quotation.html" class="back-btn">Create Quotation</a>
   </div>
 </div>
 
+<script>
+  window.allProductsList = [];
+
+  const addModal = document.getElementById('addProductModal');
+  const openAddModalBtn = document.getElementById('openAddModalBtn');
+  const closeAddModalBtn = document.getElementById('closeAddModalBtn');
+  const productSearch = document.getElementById('productSearch');
+  const productsTableBody = document.getElementById('productsTableBody');
+
+  openAddModalBtn.addEventListener('click', () => {
+    addModal.style.display = 'flex';
+    const firstInput = document.querySelector('#productForm input[name="productName"]');
+    if (firstInput) firstInput.focus();
+  });
+
+  closeAddModalBtn.addEventListener('click', () => {
+    addModal.style.display = 'none';
+  });
+
+  addModal.addEventListener('click', (e) => {
+    if (e.target === addModal) {
+      addModal.style.display = 'none';
+    }
+  });
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (ch) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+  }
+
+  function getFilteredProducts() {
+    const q = (productSearch.value || '').trim().toLowerCase();
+    if (!q) return window.allProductsList;
+    return window.allProductsList.filter((item) => {
+      const name = String(item.name || '').toLowerCase();
+      const cat = String(item.category || '').toLowerCase();
+      return name.includes(q) || cat.includes(q);
+    });
+  }
+
+  window.renderProductsSection = function(products) {
+    window.allProductsList = Array.isArray(products) ? products : [];
+    const list = getFilteredProducts();
+
+    let totalQty = 0;
+    let totalValue = 0;
+
+    if (!list.length) {
+      productsTableBody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center; padding:20px;">No products found. Click "Add Product" to add one.</td>
+        </tr>
+      `;
+    } else {
+      productsTableBody.innerHTML = list.map((item, idx) => {
+        const price = Number(item.price || 0);
+        const stock = Number(item.stock || 0);
+        const rowVal = price * stock;
+        totalQty += stock;
+        totalValue += rowVal;
+
+        return `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>${escapeHtml(item.name || '')}</td>
+            <td>${escapeHtml(item.category || '')}</td>
+            <td class="num-col">${price.toFixed(2)}</td>
+            <td class="num-col">${stock}</td>
+            <td class="num-col">${rowVal.toFixed(2)}</td>
+            <td>
+              <button type="button" class="btn btn-danger" onclick="handleDeleteProduct('${escapeHtml(item.id || '')}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('totalProductsCount').textContent = list.length;
+    document.getElementById('totalStockQty').textContent = totalQty;
+    document.getElementById('totalStockValue').textContent = totalValue.toFixed(2);
+    document.getElementById('footTotalQty').textContent = totalQty;
+    document.getElementById('footTotalValue').textContent = totalValue.toFixed(2);
+  };
+
+  window.handleDeleteProduct = async function(docId) {
+    if (!docId) return;
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (typeof window.deleteProductFromFirebase === 'function') {
+      await window.deleteProductFromFirebase(docId);
+    }
+  };
+
+  productSearch.addEventListener('input', () => {
+    window.renderProductsSection(window.allProductsList);
+  });
+
+  document.getElementById('downloadReportBtn').addEventListener('click', () => {
+    const list = getFilteredProducts();
+    let totalQty = 0;
+    let totalValue = 0;
+
+    const rowsHtml = list.map((item, idx) => {
+      const price = Number(item.price || 0);
+      const stock = Number(item.stock || 0);
+      const val = price * stock;
+      totalQty += stock;
+      totalValue += val;
+      return `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${escapeHtml(item.name || '')}</td>
+          <td>${escapeHtml(item.category || '')}</td>
+          <td>${price.toFixed(2)}</td>
+          <td>${stock}</td>
+          <td>${val.toFixed(2)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const excelHtml = `
+      <table border="1">
+        <tr>
+          <th colspan="6">TECH BD IT SOLUTIONS - PRODUCTS REPORT</th>
+        </tr>
+        <tr>
+          <th>SL</th>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock Qty</th>
+          <th>Total Value</th>
+        </tr>
+        ${rowsHtml}
+        <tr>
+          <td colspan="4"><b>Total</b></td>
+          <td><b>${totalQty}</b></td>
+          <td><b>${totalValue.toFixed(2)}</b></td>
+        </tr>
+      </table>
+    `;
+
+    const blob = new Blob(["\ufeff", excelHtml], { type: "application/vnd.ms-excel;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "products_report.xls";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('viewReportBtn').addEventListener('click', () => {
+    const list = getFilteredProducts();
+    let totalQty = 0;
+    let totalValue = 0;
+
+    const rowsHtml = list.map((item, idx) => {
+      const price = Number(item.price || 0);
+      const stock = Number(item.stock || 0);
+      const val = price * stock;
+      totalQty += stock;
+      totalValue += val;
+      return `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${escapeHtml(item.name || '')}</td>
+          <td>${escapeHtml(item.category || '')}</td>
+          <td style="text-align:right;">${price.toFixed(2)}</td>
+          <td style="text-align:right;">${stock}</td>
+          <td style="text-align:right;">${val.toFixed(2)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const win = window.open("", "_blank", "width=900,height=650");
+    if (!win) {
+      alert("Please allow pop-ups to view the report.");
+      return;
+    }
+
+    win.document.open();
+    win.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Products Report - Tech BD IT Solutions</title>
+        <style>
+          body { font-family: "Times New Roman", Times, serif; padding: 25px; color: #111; }
+          h1 { margin: 0 0 6px; text-align: center; color: #3742a1; }
+          p.sub { text-align: center; margin: 0 0 18px; color: #555; }
+          .bar { text-align: right; margin-bottom: 15px; }
+          button { padding: 8px 14px; font-size: 15px; cursor: pointer; background: #3742a1; color: #fff; border: none; border-radius: 5px; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #333; padding: 8px 10px; font-size: 15px; }
+          th { background: #eef2ff; text-align: left; }
+          tfoot td { font-weight: bold; background: #f3f4f6; }
+          @media print { .bar { display: none; } }
+        </style>
+      </head>
+      <body>
+        <div class="bar"><button onclick="window.print()">Print / Save PDF</button></div>
+        <h1>TECH BD IT SOLUTIONS</h1>
+        <p class="sub">Products Inventory Report (${new Date().toLocaleDateString('en-GB')})</p>
+        <table>
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th style="text-align:right;">Price</th>
+              <th style="text-align:right;">Stock Qty</th>
+              <th style="text-align:right;">Total Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml || '<tr><td colspan="6" style="text-align:center;">No records</td></tr>'}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">Total (${list.length} Products)</td>
+              <td style="text-align:right;">${totalQty}</td>
+              <td style="text-align:right;">${totalValue.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </body>
+      </html>
+    `);
+    win.document.close();
+  });
+</script>
+
 <script type="module">
   import { db } from './assets/firebase-config.js';
-  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+  import {
+    collection,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
   const productForm = document.getElementById('productForm');
   const submitBtn = document.getElementById('submitBtn');
+
+  async function loadProductsFromFirestore() {
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      const list = [];
+      snap.forEach((docSnap) => {
+        list.push({
+          id: docSnap.id,
+          ...docSnap.data()
+        });
+      });
+      list.sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
+      if (typeof window.renderProductsSection === 'function') {
+        window.renderProductsSection(list);
+      }
+    } catch (err) {
+      console.error("Error loading products:", err);
+      productsTableBody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center; padding:20px; color:#dc2626;">Failed to load products from Firebase.</td>
+        </tr>
+      `;
+    }
+  }
+
+  window.deleteProductFromFirebase = async function(docId) {
+    try {
+      await deleteDoc(doc(db, "products", docId));
+      await loadProductsFromFirestore();
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("❌ Error deleting product: " + err.message);
+    }
+  };
 
   productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -54,13 +665,16 @@
       category: formData.get('category').trim(),
       price: Number(formData.get('price')),
       stock: Number(formData.get('stock')),
+      createdAtMs: Date.now(),
       createdAt: serverTimestamp()
     };
 
     try {
       await addDoc(collection(db, "products"), productData);
-      alert("Product successfully added!");
+      alert("Product successfully added to Firebase!");
       productForm.reset();
+      addModal.style.display = 'none';
+      await loadProductsFromFirestore();
     } catch (err) {
       console.error("Firebase Error:", err);
       alert("Error adding product: " + err.message);
@@ -69,6 +683,8 @@
       submitBtn.textContent = "Submit";
     }
   });
+
+  window.addEventListener('DOMContentLoaded', loadProductsFromFirestore);
 </script>
 
 </body>
