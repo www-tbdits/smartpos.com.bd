@@ -692,11 +692,11 @@ window.saveCustomerToFirestore = async function(payload) {
 };
 
 window.updateCustomerInFirestore = async function(docId, payload) {
-    await updateDoc(doc(db, "customers"), docId, payload);
+    await updateDoc(doc(db, "customers", docId), payload);
 };
 
 window.deleteCustomerFromFirestore = async function(docId) {
-    await deleteDoc(doc(db, "customers"), docId);
+    await deleteDoc(doc(db, "customers", docId));
 };
 
 window.addEventListener('DOMContentLoaded', loadCustomersFromFirestore);
