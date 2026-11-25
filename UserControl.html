@@ -26,27 +26,25 @@
         body {
             background-color: var(--bg-main);
             color: var(--text-dark);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            padding: 20px;
+            padding: 18px;
         }
 
         /* Main Workspace Container */
         .main-workspace {
             width: 100%;
             max-width: 1600px;
-            height: 100%;
+            min-height: calc(100vh - 36px);
             background-color: var(--bg-main);
             border-radius: 22px;
             box-shadow: inset 6px 6px 14px var(--shadow-dark), inset -6px -6px 14px var(--shadow-light);
-            padding: 26px 32px;
+            padding: 24px 28px;
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
         }
 
         /* Header */
@@ -54,7 +52,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
         }
 
         .header-title {
@@ -72,12 +72,12 @@
             border-radius: 18px;
             box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
             padding: 20px 22px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .user-info-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr) auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
             gap: 16px;
             align-items: end;
         }
@@ -85,6 +85,7 @@
         .input-group {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .input-group label {
@@ -117,6 +118,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .password-wrapper input {
@@ -145,6 +147,7 @@
         .form-btn-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         /* Neumorphic Buttons */
@@ -160,8 +163,10 @@
             transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 7px;
             color: var(--text-dark);
+            white-space: nowrap;
         }
 
         .btn:active {
@@ -192,16 +197,18 @@
             background-color: var(--bg-main);
             border-radius: 18px;
             box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
-            padding: 20px 24px;
+            padding: 20px 22px;
             display: flex;
             flex-direction: column;
-            min-height: 0;
+            min-height: 280px;
         }
 
         .list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-bottom: 14px;
         }
 
@@ -217,6 +224,7 @@
         .search-box {
             position: relative;
             width: 260px;
+            max-width: 100%;
         }
 
         .search-box i {
@@ -243,7 +251,9 @@
 
         .table-container {
             flex-grow: 1;
+            overflow-x: auto;
             overflow-y: auto;
+            max-height: 460px;
             border-radius: 12px;
             box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
             padding: 8px 14px;
@@ -251,6 +261,7 @@
 
         table {
             width: 100%;
+            min-width: 720px;
             border-collapse: collapse;
             text-align: left;
         }
@@ -265,6 +276,7 @@
             top: 0;
             background-color: var(--bg-main);
             z-index: 2;
+            white-space: nowrap;
         }
 
         tbody tr {
@@ -283,6 +295,7 @@
             color: var(--text-dark);
             border-bottom: 1px solid rgba(197, 206, 217, 0.4);
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         tbody tr:last-child td {
@@ -312,6 +325,7 @@
             font-size: 14px;
             font-weight: 600;
             cursor: default !important;
+            white-space: normal;
         }
 
         /* --- MODALS --- */
@@ -324,7 +338,8 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 20px;
+            padding: 16px;
+            overflow-y: auto;
         }
 
         .modal-backdrop.show {
@@ -335,12 +350,14 @@
             background-color: var(--bg-main);
             width: 100%;
             max-width: 660px;
+            max-height: 90vh;
+            overflow-y: auto;
             border-radius: 22px;
             box-shadow: 10px 10px 22px var(--shadow-dark), -10px -10px 22px var(--shadow-light);
-            padding: 26px 28px;
+            padding: 24px 26px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
         }
 
         .modal-card.small-modal {
@@ -356,6 +373,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         .modal-header h3 {
@@ -383,7 +401,7 @@
 
         .modal-perm-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
         }
 
@@ -398,6 +416,7 @@
             cursor: pointer;
             transition: all 0.15s ease;
             border: 1.5px solid transparent;
+            min-width: 0;
         }
 
         .perm-check-item.checked {
@@ -412,6 +431,7 @@
             gap: 10px;
             font-size: 13.5px;
             font-weight: 700;
+            min-width: 0;
         }
 
         .perm-check-left i {
@@ -419,12 +439,16 @@
             font-size: 16px;
             width: 20px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .perm-file-tag {
             font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .perm-check-item input[type="checkbox"] {
@@ -432,6 +456,7 @@
             height: 17px;
             accent-color: var(--primary-blue);
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         /* Select All Checkbox Control */
@@ -472,6 +497,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
             border-bottom: 1px solid rgba(197, 206, 217, 0.45);
             padding-bottom: 7px;
         }
@@ -489,6 +515,8 @@
         .detail-value {
             color: var(--text-dark);
             font-weight: 800;
+            word-break: break-word;
+            text-align: right;
         }
 
         .details-perm-list {
@@ -502,16 +530,76 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 6px;
         }
 
         .modal-footer-right {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .small-modal .modal-footer {
             justify-content: center;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1180px) {
+            .user-info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .form-btn-group {
+                grid-column: 1 / -1;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .main-workspace {
+                padding: 16px 14px;
+                border-radius: 16px;
+                min-height: calc(100vh - 20px);
+            }
+            .user-form-card,
+            .list-card {
+                padding: 16px 14px;
+                border-radius: 14px;
+            }
+            .user-info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .form-btn-group {
+                justify-content: stretch;
+            }
+            .form-btn-group .btn {
+                flex: 1;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .modal-perm-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-card {
+                padding: 18px 16px;
+                border-radius: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 17px;
+            }
+            .btn {
+                padding: 9px 13px;
+                font-size: 12.5px;
+            }
         }
 
         ::-webkit-scrollbar {
@@ -531,7 +619,7 @@
         <div class="header-bar">
             <div class="header-title">
                 <i class="fa-solid fa-user-shield"></i>
-                USER CONTROL-1
+                USER CONTROL
             </div>
         </div>
 
@@ -694,7 +782,6 @@
         const userTableBody = document.getElementById('userTableBody');
         const selectAllCheckbox = document.getElementById('selectAllCheckbox');
 
-        // Toggle Password Show / Hide
         function togglePasswordVisibility() {
             const passInput = document.getElementById('password');
             const eyeIcon = document.getElementById('passwordEyeIcon');
@@ -712,7 +799,6 @@
             selectAllCheckbox.checked = checkboxes.length > 0 && checkboxes.every(c => c.checked);
         }
 
-        // Build Permission Checkboxes inside Modal
         function buildPermissionModalItems() {
             modalPermGrid.innerHTML = "";
             posModules.forEach(mod => {
@@ -722,7 +808,7 @@
                     <div class="perm-check-left">
                         <input type="checkbox" class="modal-perm-checkbox" value="${mod.id}">
                         <i class="${mod.icon}"></i>
-                        <div>
+                        <div style="min-width:0;">
                             <div>${mod.label}</div>
                             <div class="perm-file-tag">${mod.file}</div>
                         </div>
@@ -746,7 +832,6 @@
             });
         }
 
-        // Custom Alert & Confirm
         function showAlert(title, message, icon = "fa-solid fa-circle-check", color = "#1155ff") {
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').textContent = message;
@@ -782,13 +867,11 @@
             document.getElementById('alertModal').classList.remove('show');
         }
 
-        // Receive users map from Firebase Firestore
         window.setUsersFromFirestore = function(usersMap) {
             savedUsers = usersMap && typeof usersMap === "object" ? usersMap : {};
             renderUserTable();
         };
 
-        // Open Permission Popup Modal
         function openPermissionModal(existingId = null) {
             const uId = document.getElementById('userId').value.trim();
             const uPass = document.getElementById('password').value;
@@ -845,7 +928,6 @@
             draftUserData = null;
         }
 
-        // Save New or Edited User with Selected Permissions to Firebase
         async function saveUserWithPermissions() {
             if (!draftUserData) return;
 
@@ -888,13 +970,13 @@
                 resetForm();
                 showAlert(
                     wasEditing ? "User Updated" : "User Added",
-                    `User '${savedId}' saved to Firebase with ${selectedPrivileges.length} page permission(s).`,
+                    `User '${savedId}' saved with ${selectedPrivileges.length} page permission(s).`,
                     "fa-solid fa-circle-check",
                     "#16a34a"
                 );
             } catch (err) {
                 console.error("Save user error:", err);
-                showAlert("Firebase Error", "Failed to save user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
+                showAlert("Error", "Failed to save user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
             } finally {
                 saveBtn.disabled = false;
             }
@@ -905,7 +987,6 @@
             return found ? `${found.label} (${found.file})` : fileId;
         }
 
-        // Open Small Popup Showing User Details & Permissions
         function openUserDetailsModal(event, userId) {
             if (event) event.stopPropagation();
             const user = savedUsers[userId];
@@ -949,7 +1030,6 @@
             document.getElementById('userDetailsModal').classList.remove('show');
         }
 
-        // Load User into Form & Open Permission Popup for Editing
         function editUser(event, userId) {
             if (event) event.stopPropagation();
             const user = savedUsers[userId];
@@ -981,7 +1061,7 @@
                     showAlert("Deleted", `User '${userId}' has been removed.`, "fa-solid fa-trash-can", "#dc2626");
                 } catch (err) {
                     console.error("Delete user error:", err);
-                    showAlert("Firebase Error", "Failed to delete user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
+                    showAlert("Error", "Failed to delete user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
                 }
             });
         }
@@ -999,7 +1079,6 @@
             document.getElementById('mainActionText').textContent = "Add";
         }
 
-        // Render Users Table
         function renderUserTable() {
             const query = document.getElementById('searchUserInput').value.trim().toLowerCase();
             const entries = Object.entries(savedUsers).filter(([id, data]) => {
@@ -1083,7 +1162,7 @@
                     window.setUsersFromFirestore(usersMap);
                 }
             } catch (err) {
-                console.error("Error loading users from Firestore:", err);
+                console.error("Error loading users:", err);
             }
         }
 
