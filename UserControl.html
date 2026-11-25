@@ -1,264 +1,1075 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>User Control</title>
-<style>
-body{
-  font-family:'Segoe UI',Tahoma,sans-serif;
-  padding:20px;
-  background:linear-gradient(135deg,none);
-  min-height:100vh;
-}
-.container{
-  background:#fff;
-  max-width: 1500px;
-  margin: 0 auto;
-  border-radius:10px;
-  padding: 0px;
-  box-shadow:0 px5 0px rgba(0,0,0,0.2);
-}
-h2{
-  color:#1e3a8a;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-button.add-user{
-  background:#1e90ff;
-  color:white;
-  font-size:14px;
-  padding:8px 15px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-button.add-user:hover{background:#0b6cc4;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #e6ebf2;
+            --primary-blue: #1155ff;
+            --text-dark: #263238;
+            --text-muted: #546e7a;
+            --shadow-light: #ffffff;
+            --shadow-dark: #c5ced9;
+        }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-  background:#fff;
-  border-radius: 0px;
-  overflow:hidden;
-}
-th{
-  background:#1e3a8a;
-  color:#fff;
-  padding:10px;
-  font-size:18px;
-}
-td{
-  padding:8px;
-  text-align:center;
-  border-bottom:1px solid #eee;
-  font-size:16px;
-}
-tr:hover{background:#f3f4f6;}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
 
-select.role-select{
-  padding:6px 8px;
-  border:1px solid #ccc;
-  border-radius:5px;
-}
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
 
-button{padding:4px 8px;border:none;border-radius:5px;cursor:pointer;margin:2px;font-size:14px;}
-button.edit{background:#4f46e5;color:#fff;}
-button.delete{background:#ef4444;color:#fff;}
-button.perm{background:#22c55e;color:#fff;}
+        /* Main Workspace Container */
+        .main-workspace {
+            width: 100%;
+            max-width: 1600px;
+            height: 100%;
+            background-color: var(--bg-main);
+            border-radius: 22px;
+            box-shadow: inset 6px 6px 14px var(--shadow-dark), inset -6px -6px 14px var(--shadow-light);
+            padding: 26px 32px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-/* Eye icon compact style */
-button.eye{
-  background:none;
-  border:none;
-  padding:0;
-  margin-left:5px;
-  font-size:16px;
-  cursor:pointer;
-}
+        /* Header */
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-/* Modal */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
-.modal-content{background:#fff;padding:20px;border-radius:10px;width:400px;max-height:80%;overflow:auto;position:relative;}
-.close{position:absolute;right:15px;top:10px;cursor:pointer;font-weight:bold;font-size:18px;}
+        .header-title {
+            color: var(--primary-blue);
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.input-small{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #ccc;}
-.row-actions{display:flex;gap:6px;justify-content:center;align-items:center;}
-</style>
+        /* Top Form Card */
+        .user-form-card {
+            background-color: var(--bg-main);
+            border-radius: 18px;
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            padding: 20px 22px;
+            margin-bottom: 22px;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 6px;
+            padding-left: 4px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--bg-main);
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light), 0 0 0 2px rgba(17, 85, 255, 0.25);
+        }
+
+        /* Password Input with Eye Icon */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 38px;
+        }
+
+        .toggle-pass-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s ease;
+        }
+
+        .toggle-pass-btn:hover {
+            color: var(--primary-blue);
+        }
+
+        .form-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Neumorphic Buttons */
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            background-color: var(--bg-main);
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-dark);
+        }
+
+        .btn:active {
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+        }
+
+        .btn-primary { color: var(--primary-blue); }
+        .btn-primary:hover { background-color: var(--primary-blue); color: #fff; }
+
+        .btn-success { color: #16a34a; }
+        .btn-success:hover { background-color: #16a34a; color: #fff; }
+
+        .btn-warning { color: #d97706; }
+        .btn-warning:hover { background-color: #d97706; color: #fff; }
+
+        .btn-danger { color: #dc2626; }
+        .btn-danger:hover { background-color: #dc2626; color: #fff; }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+
+        /* User List Section */
+        .list-card {
+            flex-grow: 1;
+            background-color: var(--bg-main);
+            border-radius: 18px;
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .list-header h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 260px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px 8px 34px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--bg-main);
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .table-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            padding: 8px 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead th {
+            padding: 12px 10px;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(197, 206, 217, 0.7);
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-main);
+            z-index: 2;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        tbody tr:hover td {
+            color: var(--primary-blue);
+        }
+
+        tbody td {
+            padding: 12px 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(197, 206, 217, 0.4);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .perm-pill {
+            background-color: var(--bg-main);
+            color: var(--primary-blue);
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: 20px;
+            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
+            display: inline-block;
+        }
+
+        .action-cells {
+            display: flex;
+            gap: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: default !important;
+        }
+
+        /* --- MODALS --- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(230, 235, 242, 0.78);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background-color: var(--bg-main);
+            width: 100%;
+            max-width: 660px;
+            border-radius: 22px;
+            box-shadow: 10px 10px 22px var(--shadow-dark), -10px -10px 22px var(--shadow-light);
+            padding: 26px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .modal-card.small-modal {
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-card.details-modal {
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-user-summary {
+            background-color: var(--bg-main);
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .modal-perm-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .perm-check-item {
+            background-color: var(--bg-main);
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1.5px solid transparent;
+        }
+
+        .perm-check-item.checked {
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            border-color: rgba(17, 85, 255, 0.35);
+            color: var(--primary-blue);
+        }
+
+        .perm-check-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .perm-check-left i {
+            color: var(--primary-blue);
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .perm-file-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .perm-check-item input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* Select All Checkbox Control */
+        .select-all-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 10px;
+            background-color: var(--bg-main);
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .select-all-box input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* User Details Popup Content */
+        .details-info-box {
+            background-color: var(--bg-main);
+            box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 13.5px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(197, 206, 217, 0.45);
+            padding-bottom: 7px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .detail-value {
+            color: var(--text-dark);
+            font-weight: 800;
+        }
+
+        .details-perm-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 4px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .modal-footer-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .small-modal .modal-footer {
+            justify-content: center;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5ced9;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>User Control
-    <button class="add-user" onclick="openAddUserModal()">➕ Add User</button>
-  </h2>
+    <div class="main-workspace">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="header-title">
+                <i class="fa-solid fa-user-shield"></i>
+                USER CONTROL
+            </div>
+        </div>
 
-  <table id="userTable">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+        <!-- User Input Form -->
+        <div class="user-form-card">
+            <div class="user-info-grid">
+                <div class="input-group">
+                    <label>User ID</label>
+                    <input type="text" id="userId" placeholder="e.g. usr01">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Enter Password">
+                        <button type="button" class="toggle-pass-btn" onclick="togglePasswordVisibility()" title="Show / Hide Password">
+                            <i class="fa-solid fa-eye" id="passwordEyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>User Name</label>
+                    <input type="text" id="userName" placeholder="Full Name">
+                </div>
+                <div class="input-group">
+                    <label>Designation</label>
+                    <input type="text" id="designation" placeholder="e.g. Cashier / Manager">
+                </div>
+                <div class="form-btn-group">
+                    <button class="btn btn-primary" id="mainActionBtn" onclick="openPermissionModal()">
+                        <i class="fa-solid fa-plus" id="mainActionIcon"></i> <span id="mainActionText">Add</span>
+                    </button>
+                    <button class="btn" onclick="resetForm()" title="Clear Form">
+                        <i class="fa-solid fa-rotate-left"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
 
-<!-- Permissions Modal -->
-<div class="modal" id="permModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('permModal')">&times;</span>
-    <h3>Permissions - <span id="permUser"></span></h3>
-    <div id="permCheckboxes"></div>
-    <button onclick="savePermissions()">Save</button>
-  </div>
-</div>
+        <!-- Saved Users List -->
+        <div class="list-card">
+            <div class="list-header">
+                <h3>
+                    <i class="fa-solid fa-users" style="color: var(--primary-blue);"></i>
+                    User List (<span id="userCount">0</span>)
+                </h3>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchUserInput" placeholder="Search user..." oninput="renderUserTable()">
+                </div>
+            </div>
 
-<!-- Add User Modal -->
-<div class="modal" id="addUserModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('addUserModal')">&times;</span>
-    <h3>Add New User</h3>
-    <input class="input-small" type="text" id="newUsername" placeholder="Username">
-    <input class="input-small" type="password" id="newPassword" placeholder="Password">
-    <select id="newRole" class="input-small">
-      <option value="Admin">Admin</option>
-      <option value="Manager">Manager</option>
-      <option value="Normal">Normal</option>
-      <option value="Cashier">Cashier</option>
-    </select>
-    <button onclick="addNewUser()">Add</button>
-  </div>
-</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">S.N</th>
+                            <th style="width: 140px;">User ID</th>
+                            <th style="width: 200px;">User Name</th>
+                            <th style="width: 170px;">Designation</th>
+                            <th style="width: 150px;">Permissions</th>
+                            <th style="width: 170px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<script>
-const allPermissions = ['Sales Reports','Sales of Point','Customers','Products','User Control','Inventory','Help','Logout'];
-let users = JSON.parse(localStorage.getItem('tbdits_users')) || [];
-let currentIndex = null;
+    <!-- Permission Selection Popup Modal -->
+    <div class="modal-backdrop" id="permissionModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span id="permModalTitle">Set User Permissions</span>
+                </h3>
+                <button class="btn btn-sm" onclick="closePermissionModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-function renderUsers(){
-  const tbody = document.querySelector('#userTable tbody');
-  tbody.innerHTML='';
-  users.forEach((user,i)=>{
-    const roleHTML = `
-      <select class="role-select" onchange="changeRole(${i},this.value)">
-        <option value="Admin" ${user.role==='Admin'?'selected':''}>Admin</option>
-        <option value="Manager" ${user.role==='Manager'?'selected':''}>Manager</option>
-        <option value="Normal" ${user.role==='Normal'?'selected':''}>Normal</option>
-        <option value="Cashier" ${user.role==='Cashier'?'selected':''}>Cashier</option>
-      </select>`;
+            <div class="modal-user-summary" id="permModalSummary"></div>
 
-    const passId = `pass_${i}`;
-    const eyeId = `eye_${i}`;
-    const masked = user.password ? '*'.repeat(Math.max(user.password.length, 6)) : '';
-    tbody.innerHTML+=`
-      <tr>
-        <td>${escapeHtml(user.username)}</td>
-        <td>
-          <span id="${passId}">${masked}</span>
-          <button class="eye" id="${eyeId}" onclick="togglePassword(${i})">👁️</button>
-        </td>
-        <td>${roleHTML}</td>
-        <td class="row-actions">
-          <button class="edit" onclick="editUser(${i})">Edit</button>
-          <button class="delete" onclick="deleteUser(${i})">Delete</button>
-          <button class="perm" onclick="openPerm(${i})">Permissions</button>
-        </td>
-      </tr>`;
-  });
-}
+            <div class="modal-perm-grid" id="modalPermGrid"></div>
 
-function saveUsers(){localStorage.setItem('tbdits_users',JSON.stringify(users));renderUsers();}
-function changeRole(i,val){users[i].role=val;saveUsers();}
+            <div class="modal-footer">
+                <label class="select-all-box" for="selectAllCheckbox">
+                    <input type="checkbox" id="selectAllCheckbox" onchange="handleSelectAllCheckbox(this)">
+                    <span>Select</span>
+                </label>
+                <div class="modal-footer-right">
+                    <button class="btn" onclick="closePermissionModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="saveUserWithPermissions()">
+                        <i class="fa-solid fa-floppy-disk"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-function editUser(i){
-  const newName = prompt('Change username:', users[i].username);
-  if(newName && newName.trim()){
-    if(users.some((u,idx)=>u.username===newName.trim() && idx!==i)){
-      alert('Username already exists');
-      return;
-    }
-    users[i].username = newName.trim();
-  }
-  const newPass = prompt('Change password (leave blank to keep current):', '');
-  if(newPass !== null){
-    if(newPass.trim() !== '') users[i].password = newPass;
-  }
-  saveUsers();
-}
+    <!-- User Details & Permissions Popup Modal (On Row / Permissions Click) -->
+    <div class="modal-backdrop" id="userDetailsModal">
+        <div class="modal-card details-modal">
+            <div class="modal-header">
+                <h3>
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>User Details & Permissions</span>
+                </h3>
+                <button class="btn btn-sm" onclick="closeUserDetailsModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-function deleteUser(i){
-  if(confirm('Delete user?')){
-    users.splice(i,1);
-    saveUsers();
-  }
-}
+            <div class="details-info-box" id="userDetailsInfo"></div>
 
-function openPerm(i){
-  currentIndex=i;
-  document.getElementById('permUser').textContent=users[i].username;
-  const box=document.getElementById('permCheckboxes');
-  box.innerHTML='';
-  allPermissions.forEach(p=>{
-    const checked = users[i].permissions?.includes(p) ? 'checked' : '';
-    box.innerHTML += `<label style="display:block;margin:6px 0;"><input type="checkbox" value="${escapeHtml(p)}" ${checked}> ${p}</label>`;
-  });
-  document.getElementById('permModal').style.display='flex';
-}
+            <div>
+                <div style="font-size: 12.5px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px;">
+                    Assigned Permissions:
+                </div>
+                <div class="details-perm-list" id="userDetailsPermissions"></div>
+            </div>
 
-function savePermissions(){
-  const selected = [...document.querySelectorAll('#permCheckboxes input:checked')].map(el=>el.value);
-  users[currentIndex].permissions = selected;
-  saveUsers();
-  closeModal('permModal');
-}
+            <div class="modal-footer" style="justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-sm btn-warning" id="detailsEditBtn">
+                    <i class="fa-solid fa-pen"></i> Edit
+                </button>
+                <button class="btn btn-sm" onclick="closeUserDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
 
-function openAddUserModal(){document.getElementById('addUserModal').style.display='flex';}
+    <!-- Custom Alert / Confirm Modal -->
+    <div class="modal-backdrop" id="alertModal">
+        <div class="modal-card small-modal">
+            <div id="alertIcon" style="font-size: 34px; color: var(--primary-blue);"></div>
+            <h3 id="alertTitle" style="font-size: 17px; font-weight: 800;">Notice</h3>
+            <p id="alertMessage" style="font-size: 13.5px; font-weight: 600; color: var(--text-muted); line-height: 1.5;"></p>
+            <div class="modal-footer" id="alertActions"></div>
+        </div>
+    </div>
 
-function addNewUser(){
-  const username = document.getElementById('newUsername').value.trim();
-  const password = document.getElementById('newPassword').value;
-  const role = document.getElementById('newRole').value;
-  if(!username || !password){ alert('Fill all fields'); return; }
-  if(users.some(u=>u.username===username)){ alert('Username exists'); return; }
-  users.push({ username, password, role, permissions: [] });
-  saveUsers();
-  closeModal('addUserModal');
-  document.getElementById('newUsername').value='';
-  document.getElementById('newPassword').value='';
-}
+    <script>
+        // নিরাপদ ফাইল সিস্টেম লোড করার পদ্ধতি
+        let fs = null;
+        let path = null;
+        try {
+            if (typeof require !== 'undefined') {
+                fs = require('fs');
+                path = require('path');
+            }
+        } catch (e) {
+            console.log("Running in browser mode.");
+        }
 
-function togglePassword(i){
-  const passEl = document.getElementById(`pass_${i}`);
-  const eyeBtn = document.getElementById(`eye_${i}`);
-  if(!passEl || !users[i]) return;
-  if(eyeBtn.dataset.show === '1'){
-    passEl.textContent = users[i].password ? '*'.repeat(Math.max(users[i].password.length, 6)) : '';
-    eyeBtn.dataset.show = '0';
-    eyeBtn.textContent = '👁️';
-  } else {
-    passEl.textContent = users[i].password || '';
-    eyeBtn.dataset.show = '1';
-    eyeBtn.textContent = '👁️';
-  }
-}
+        const FILE_DB_PATH = "E:\\TSBackup\\TailoringSoft26.Lsd";
 
-function closeModal(id){document.getElementById(id).style.display='none';}
-function escapeHtml(text){
-  if(!text && text !== 0) return '';
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+        // আপনার ড্যাশবোর্ডের সাথে যুক্ত ৮টি পেজ/মডিউল
+        const posModules = [
+            { id: "CloudPOS.html", label: "Cloud POS", file: "CloudPOS.html", icon: "fa-solid fa-cart-shopping" },
+            { id: "customers.htm", label: "Customers", file: "customers.htm", icon: "fa-solid fa-users" },
+            { id: "help.html", label: "Help", file: "help.html", icon: "fa-solid fa-circle-question" },
+            { id: "inventory.html", label: "Inventory", file: "inventory.html", icon: "fa-solid fa-database" },
+            { id: "products.html", label: "Products", file: "products.html", icon: "fa-solid fa-box-archive" },
+            { id: "quotation.html", label: "Quotation", file: "quotation.html", icon: "fa-solid fa-file-lines" },
+            { id: "reports.html", label: "Reports", file: "reports.html", icon: "fa-solid fa-chart-line" },
+            { id: "UserControl.html", label: "User Control", file: "UserControl.html", icon: "fa-solid fa-user-check" }
+        ];
 
-renderUsers();
-</script>
+        let savedUsers = {};
+        let editingUserId = null;
+        let draftUserData = null;
 
+        const modalPermGrid = document.getElementById('modalPermGrid');
+        const userTableBody = document.getElementById('userTableBody');
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+
+        // Toggle Password Show / Hide
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('passwordEyeIcon');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                eyeIcon.className = "fa-solid fa-eye-slash";
+            } else {
+                passInput.type = "password";
+                eyeIcon.className = "fa-solid fa-eye";
+            }
+        }
+
+        function syncSelectAllState() {
+            const checkboxes = Array.from(document.querySelectorAll('.modal-perm-checkbox'));
+            selectAllCheckbox.checked = checkboxes.length > 0 && checkboxes.every(c => c.checked);
+        }
+
+        // Build Permission Checkboxes inside Modal
+        function buildPermissionModalItems() {
+            modalPermGrid.innerHTML = "";
+            posModules.forEach(mod => {
+                const item = document.createElement('label');
+                item.className = 'perm-check-item';
+                item.innerHTML = `
+                    <div class="perm-check-left">
+                        <input type="checkbox" class="modal-perm-checkbox" value="${mod.id}">
+                        <i class="${mod.icon}"></i>
+                        <div>
+                            <div>${mod.label}</div>
+                            <div class="perm-file-tag">${mod.file}</div>
+                        </div>
+                    </div>
+                `;
+                const chk = item.querySelector('input');
+                chk.addEventListener('change', () => {
+                    item.classList.toggle('checked', chk.checked);
+                    syncSelectAllState();
+                });
+                modalPermGrid.appendChild(item);
+            });
+        }
+
+        buildPermissionModalItems();
+
+        function handleSelectAllCheckbox(masterChk) {
+            document.querySelectorAll('.modal-perm-checkbox').forEach(chk => {
+                chk.checked = masterChk.checked;
+                chk.closest('.perm-check-item').classList.toggle('checked', masterChk.checked);
+            });
+        }
+
+        // Custom Alert & Confirm
+        function showAlert(title, message, icon = "fa-solid fa-circle-check", color = "#1155ff") {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            const iconEl = document.getElementById('alertIcon');
+            iconEl.innerHTML = `<i class="${icon}"></i>`;
+            iconEl.style.color = color;
+
+            document.getElementById('alertActions').innerHTML = `
+                <button class="btn btn-primary" onclick="closeAlert()">OK</button>
+            `;
+            document.getElementById('alertModal').classList.add('show');
+        }
+
+        function showConfirm(title, message, onYes) {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            const iconEl = document.getElementById('alertIcon');
+            iconEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+            iconEl.style.color = "#dc2626";
+
+            document.getElementById('alertActions').innerHTML = `
+                <button class="btn" onclick="closeAlert()">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            `;
+            document.getElementById('alertModal').classList.add('show');
+            document.getElementById('confirmDeleteBtn').onclick = () => {
+                closeAlert();
+                onYes();
+            };
+        }
+
+        function closeAlert() {
+            document.getElementById('alertModal').classList.remove('show');
+        }
+
+        // Database Initialization & Save
+        function initDatabase() {
+            if (!fs) {
+                const local = localStorage.getItem('smartpos_users_db');
+                savedUsers = local ? JSON.parse(local) : {};
+                renderUserTable();
+                return;
+            }
+            try {
+                if (!fs.existsSync(FILE_DB_PATH)) {
+                    const dir = path.dirname(FILE_DB_PATH);
+                    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+                    fs.writeFileSync(FILE_DB_PATH, JSON.stringify({}), 'utf8');
+                    savedUsers = {};
+                } else {
+                    const content = fs.readFileSync(FILE_DB_PATH, 'utf8');
+                    savedUsers = content ? JSON.parse(content) : {};
+                }
+                renderUserTable();
+            } catch (err) {
+                showAlert("Database Error", err.message, "fa-solid fa-circle-xmark", "#dc2626");
+            }
+        }
+
+        function saveToStorage() {
+            if (!fs) {
+                localStorage.setItem('smartpos_users_db', JSON.stringify(savedUsers));
+                return true;
+            }
+            try {
+                fs.writeFileSync(FILE_DB_PATH, JSON.stringify(savedUsers, null, 4), 'utf8');
+                return true;
+            } catch (err) {
+                showAlert("Save Failed", err.message, "fa-solid fa-circle-xmark", "#dc2626");
+                return false;
+            }
+        }
+
+        initDatabase();
+
+        // Open Permission Popup Modal
+        function openPermissionModal(existingId = null) {
+            const uId = document.getElementById('userId').value.trim();
+            const uPass = document.getElementById('password').value;
+            const uName = document.getElementById('userName').value.trim();
+            const uDesg = document.getElementById('designation').value.trim();
+
+            if (!uId || !uPass || !uName || !uDesg) {
+                showAlert("Incomplete Form", "Please fill up User ID, Password, User Name, and Designation first.", "fa-solid fa-circle-exclamation", "#d97706");
+                return;
+            }
+
+            const targetId = existingId || editingUserId;
+
+            if (!targetId && savedUsers[uId]) {
+                showAlert("Duplicate ID", `User ID '${uId}' already exists. Click Edit on the user row to modify.`, "fa-solid fa-circle-exclamation", "#d97706");
+                return;
+            }
+
+            if (targetId && targetId !== uId && savedUsers[uId]) {
+                showAlert("ID Conflict", `Another user already uses ID '${uId}'.`, "fa-solid fa-circle-exclamation", "#d97706");
+                return;
+            }
+
+            draftUserData = {
+                id: uId,
+                password: uPass,
+                name: uName,
+                designation: uDesg
+            };
+
+            const existingPrivileges = (targetId && savedUsers[targetId]) ? savedUsers[targetId].privileges : [];
+
+            document.querySelectorAll('.modal-perm-checkbox').forEach(chk => {
+                chk.checked = existingPrivileges.includes(chk.value);
+                chk.closest('.perm-check-item').classList.toggle('checked', chk.checked);
+            });
+            syncSelectAllState();
+
+            document.getElementById('permModalTitle').textContent = targetId
+                ? `Update Permissions (${uId})`
+                : `Assign Permissions (${uId})`;
+
+            document.getElementById('permModalSummary').innerHTML = `
+                <span><i class="fa-solid fa-id-badge"></i> ID: <b>${uId}</b></span>
+                <span><i class="fa-solid fa-user"></i> Name: <b>${uName}</b></span>
+                <span><i class="fa-solid fa-briefcase"></i> Role: <b>${uDesg}</b></span>
+            `;
+
+            document.getElementById('permissionModal').classList.add('show');
+        }
+
+        function closePermissionModal() {
+            document.getElementById('permissionModal').classList.remove('show');
+            draftUserData = null;
+        }
+
+        // Save New or Edited User with Selected Permissions
+        function saveUserWithPermissions() {
+            if (!draftUserData) return;
+
+            const selectedPrivileges = [];
+            document.querySelectorAll('.modal-perm-checkbox:checked').forEach(chk => {
+                selectedPrivileges.push(chk.value);
+            });
+
+            if (editingUserId && editingUserId !== draftUserData.id) {
+                delete savedUsers[editingUserId];
+            }
+
+            savedUsers[draftUserData.id] = {
+                password: draftUserData.password,
+                name: draftUserData.name,
+                designation: draftUserData.designation,
+                privileges: selectedPrivileges
+            };
+
+            if (saveToStorage()) {
+                const wasEditing = Boolean(editingUserId);
+                const savedId = draftUserData.id;
+                closePermissionModal();
+                resetForm();
+                renderUserTable();
+                showAlert(
+                    wasEditing ? "User Updated" : "User Added",
+                    `User '${savedId}' saved with ${selectedPrivileges.length} page permission(s).`,
+                    "fa-solid fa-circle-check",
+                    "#16a34a"
+                );
+            }
+        }
+
+        function getModuleLabel(fileId) {
+            const found = posModules.find(m => m.id === fileId);
+            return found ? `${found.label} (${found.file})` : fileId;
+        }
+
+        // Open Small Popup Showing User Details & Permissions
+        function openUserDetailsModal(event, userId) {
+            if (event) event.stopPropagation();
+            const user = savedUsers[userId];
+            if (!user) return;
+
+            document.getElementById('userDetailsInfo').innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">User ID</span>
+                    <span class="detail-value">${userId}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">User Name</span>
+                    <span class="detail-value">${user.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Designation</span>
+                    <span class="detail-value">${user.designation}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Password</span>
+                    <span class="detail-value">${user.password}</span>
+                </div>
+            `;
+
+            const permContainer = document.getElementById('userDetailsPermissions');
+            if (user.privileges && user.privileges.length > 0) {
+                permContainer.innerHTML = user.privileges.map(p => `<span class="perm-pill">${getModuleLabel(p)}</span>`).join("");
+            } else {
+                permContainer.innerHTML = `<span style="color: var(--text-muted); font-size: 12.5px; font-weight: 600;">No permissions assigned</span>`;
+            }
+
+            document.getElementById('detailsEditBtn').onclick = () => {
+                closeUserDetailsModal();
+                editUser(null, userId);
+            };
+
+            document.getElementById('userDetailsModal').classList.add('show');
+        }
+
+        function closeUserDetailsModal() {
+            document.getElementById('userDetailsModal').classList.remove('show');
+        }
+
+        // Load User into Form & Open Permission Popup for Editing
+        function editUser(event, userId) {
+            if (event) event.stopPropagation();
+            const user = savedUsers[userId];
+            if (!user) return;
+
+            editingUserId = userId;
+            document.getElementById('userId').value = userId;
+            document.getElementById('password').value = user.password;
+            document.getElementById('userName').value = user.name;
+            document.getElementById('designation').value = user.designation;
+
+            document.getElementById('mainActionIcon').className = "fa-solid fa-pen-to-square";
+            document.getElementById('mainActionText').textContent = "Update";
+            openPermissionModal(userId);
+        }
+
+        function deleteUser(event, userId) {
+            if (event) event.stopPropagation();
+            if (!savedUsers[userId]) return;
+            showConfirm("Delete User", `Are you sure you want to delete user '${userId}' (${savedUsers[userId].name})?`, () => {
+                delete savedUsers[userId];
+                if (editingUserId === userId) resetForm();
+                if (saveToStorage()) {
+                    renderUserTable();
+                    showAlert("Deleted", `User '${userId}' has been removed.`, "fa-solid fa-trash-can", "#dc2626");
+                }
+            });
+        }
+
+        function resetForm() {
+            editingUserId = null;
+            document.getElementById('userId').value = "";
+            const passInput = document.getElementById('password');
+            passInput.value = "";
+            passInput.type = "password";
+            document.getElementById('passwordEyeIcon').className = "fa-solid fa-eye";
+            document.getElementById('userName').value = "";
+            document.getElementById('designation').value = "";
+            document.getElementById('mainActionIcon').className = "fa-solid fa-plus";
+            document.getElementById('mainActionText').textContent = "Add";
+        }
+
+        // Render Users Table
+        function renderUserTable() {
+            const query = document.getElementById('searchUserInput').value.trim().toLowerCase();
+            const entries = Object.entries(savedUsers).filter(([id, data]) => {
+                return id.toLowerCase().includes(query) ||
+                       data.name.toLowerCase().includes(query) ||
+                       data.designation.toLowerCase().includes(query);
+            });
+
+            document.getElementById('userCount').textContent = Object.keys(savedUsers).length;
+
+            if (entries.length === 0) {
+                userTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            No users found. Fill in the form above and click <b>Add</b> to create a user.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            userTableBody.innerHTML = entries.map(([id, user], index) => {
+                const permCount = user.privileges ? user.privileges.length : 0;
+                return `
+                    <tr onclick="openUserDetailsModal(event, '${id}')" title="Click to view user details & permissions">
+                        <td>${index + 1}</td>
+                        <td><b>${id}</b></td>
+                        <td>${user.name}</td>
+                        <td>${user.designation}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="openUserDetailsModal(event, '${id}')">
+                                <i class="fa-solid fa-key"></i> Permissions (${permCount})
+                            </button>
+                        </td>
+                        <td>
+                            <div class="action-cells">
+                                <button class="btn btn-sm btn-warning" onclick="editUser(event, '${id}')">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteUser(event, '${id}')">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+    </script>
 </body>
 </html>
