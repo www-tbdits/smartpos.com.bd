@@ -297,7 +297,7 @@
     <footer class="site-footer">
         <div class="footer-left">
             <i class="fa-solid fa-cloud-arrow-up"></i>
-            <span>Smart POS</span>
+            <span>Smart POS v 1.0.10</span>
         </div>
         <div class="footer-right">
             <div class="footer-item">
@@ -310,7 +310,6 @@
             </div>
             <div class="footer-item">
                 <i class="fa-solid fa-globe"></i>
-                <!-- Fixed Text Label Here -->
                 <span>Website: <a href="https://www-tbdits.github.io/techbditsolutions.com/" target="_blank"
                         class="footer-link">www.techbditsolutions.com</a></span>
             </div>
@@ -337,39 +336,114 @@
             }
         }
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
+        function completeLoginSession(sessionPayload) {
             const c = document.getElementById('loginContainer');
             const e = document.getElementById('errorMsg');
             const b = document.getElementById('submitBtn');
 
-            const customUsers = JSON.parse(localStorage.getItem('tbdits_users')) || [];
-            const defUsers = [{ username: 'jems', password: '6735', role: 'admin', permissions: ['Sales Reports', 'Sales of Point', 'Customers', 'Products', 'User Control', 'Inventory', 'Help', 'Logout'] }];
-            const allUsers = [...defUsers, ...customUsers];
+            e.style.display = 'none';
+            b.disabled = true;
+            b.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Logging in...`;
 
-            const found = allUsers.find(x => x.username === u && x.password === p);
+            sessionStorage.setItem('tbdits_logged_in', 'true');
+            sessionStorage.setItem('tbdits_user', JSON.stringify(sessionPayload));
+            c.classList.add('exit-animation');
 
+            setTimeout(() => {
+                window.location.href = 'Dashboard.html';
+            }, 450);
+        }
+
+        function showLoginError() {
+            const e = document.getElementById('errorMsg');
+            const b = document.getElementById('submitBtn');
+            const pf = document.getElementById('password');
+            b.disabled = false;
+            b.innerHTML = `<span>Login</span>`;
+            e.style.display = 'block';
+            pf.value = '';
+            pf.focus();
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            const b = document.getElementById('submitBtn');
+
+            b.disabled = true;
+            b.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking...`;
+
+            if (typeof window.authenticateUserWithFirestore === 'function') {
+                const dbUser = await window.authenticateUserWithFirestore(u, p);
+                if (dbUser) {
+                    completeLoginSession(dbUser);
+                    return;
+                }
+            }
+
+            const defUsers = [
+                {
+                    username: 'jems',
+                    userId: 'jems',
+                    name: 'jems',
+                    password: '6735',
+                    role: 'admin',
+                    permissions: ['Sales Reports', 'Sales of Point', 'Customers', 'Products', 'User Control', 'Inventory', 'Help', 'Logout']
+                }
+            ];
+
+            const found = defUsers.find(x => x.username === u && x.password === p);
             if (found) {
-                e.style.display = 'none';
-                b.disabled = true;
-                b.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Logging in...`;
-
-                sessionStorage.setItem('tbdits_logged_in', 'true');
-                sessionStorage.setItem('tbdits_user', JSON.stringify(found));
-                c.classList.add('exit-animation');
-
-                setTimeout(() => {
-                    window.location.href = 'Dashboard.html';
-                }, 450);
+                completeLoginSession(found);
             } else {
-                e.style.display = 'block';
-                const pf = document.getElementById('password');
-                pf.value = '';
-                pf.focus();
+                showLoginError();
             }
         }
+    </script>
+
+    <script type="module">
+        import { db } from './assets/firebase-config.js';
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+        window.authenticateUserWithFirestore = async function(username, password) {
+            try {
+                const snap = await getDoc(doc(db, "users", username));
+                if (!snap.exists()) return null;
+
+                const data = snap.data();
+                if (String(data.password || '') !== String(password || '')) {
+                    return null;
+                }
+
+                const rawPrivs = Array.isArray(data.privileges) ? data.privileges : [];
+                const idToLabel = {
+                    "CloudPOS.html": "Sales of Point",
+                    "customers.htm": "Customers",
+                    "products.html": "Products",
+                    "inventory.html": "Inventory",
+                    "reports.html": "Sales Reports",
+                    "UserControl.html": "User Control",
+                    "help.html": "Help",
+                    "logout": "Logout"
+                };
+
+                const mappedPermissions = rawPrivs.map(item => idToLabel[item] || item);
+
+                return {
+                    username: data.userId || username,
+                    userId: data.userId || username,
+                    name: data.name || username,
+                    designation: data.designation || "",
+                    role: data.role || (username === 'jems' ? 'admin' : 'user'),
+                    permissions: mappedPermissions,
+                    privileges: rawPrivs
+                };
+            } catch (err) {
+                console.error("Login check error:", err);
+                return null;
+            }
+        };
     </script>
 </body>
 
