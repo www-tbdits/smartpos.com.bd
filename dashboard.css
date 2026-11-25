@@ -149,17 +149,24 @@ main {
 
 .icon-grid {
     display: grid;
+    grid-template-rows: repeat(4, 125px);
+    grid-auto-flow: column;
+    grid-auto-columns: 150px;
     gap: 15px;
     justify-items: center;
     align-items: center;
+    align-content: start;
+    flex-shrink: 0;
 }
 
-.icon-grid.full-access {
-    grid-template-columns: repeat(2, 150px);
-}
-
-.icon-grid.partial-access {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+.icon-grid.full-access,
+.icon-grid.partial-access,
+.icon-grid.single-row {
+    grid-template-rows: repeat(4, 125px);
+    grid-auto-flow: column;
+    grid-auto-columns: 150px;
+    width: auto;
+    max-width: none;
 }
 
 .icon-card {
@@ -479,9 +486,13 @@ main {
         margin-bottom: 120px;
     }
 
+    .icon-grid,
     .icon-grid.full-access,
-    .icon-grid.partial-access {
-        grid-template-columns: repeat(2, 1fr);
+    .icon-grid.partial-access,
+    .icon-grid.single-row {
+        grid-template-rows: repeat(4, 125px);
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(120px, 1fr);
         width: 100%;
     }
 
