@@ -764,14 +764,14 @@
 
     <script>
         const posModules = [
-            { id: "CloudPOS.html", label: "Cloud POS", file: "CloudPOS.html", icon: "fa-solid fa-cart-shopping" },
+            { id: "CloudPOS.html", label: "Sales of Point", file: "CloudPOS.html", icon: "fa-solid fa-cart-shopping" },
             { id: "customers.htm", label: "Customers", file: "customers.htm", icon: "fa-solid fa-users" },
-            { id: "help.html", label: "Help", file: "help.html", icon: "fa-solid fa-circle-question" },
-            { id: "inventory.html", label: "Inventory", file: "inventory.html", icon: "fa-solid fa-database" },
             { id: "products.html", label: "Products", file: "products.html", icon: "fa-solid fa-box-archive" },
-            { id: "quotation.html", label: "Quotation", file: "quotation.html", icon: "fa-solid fa-file-lines" },
-            { id: "reports.html", label: "Reports", file: "reports.html", icon: "fa-solid fa-chart-line" },
-            { id: "UserControl.html", label: "User Control", file: "UserControl.html", icon: "fa-solid fa-user-check" }
+            { id: "inventory.html", label: "Inventory", file: "inventory.html", icon: "fa-solid fa-database" },
+            { id: "reports.html", label: "Sales Reports", file: "reports.html", icon: "fa-solid fa-chart-line" },
+            { id: "UserControl.html", label: "User Control", file: "UserControl.html", icon: "fa-solid fa-user-check" },
+            { id: "help.html", label: "Help", file: "help.html", icon: "fa-solid fa-circle-question" },
+            { id: "logout", label: "Logout", file: "Dashboard Action", icon: "fa-solid fa-right-from-bracket" }
         ];
 
         let savedUsers = {};
@@ -970,7 +970,7 @@
                 resetForm();
                 showAlert(
                     wasEditing ? "User Updated" : "User Added",
-                    `User '${savedId}' saved with ${selectedPrivileges.length} page permission(s).`,
+                    `User '${savedId}' saved with ${selectedPrivileges.length} permission(s).`,
                     "fa-solid fa-circle-check",
                     "#16a34a"
                 );
@@ -984,7 +984,8 @@
 
         function getModuleLabel(fileId) {
             const found = posModules.find(m => m.id === fileId);
-            return found ? `${found.label} (${found.file})` : fileId;
+            if (!found) return fileId;
+            return found.id === "logout" ? found.label : `${found.label} (${found.file})`;
         }
 
         function openUserDetailsModal(event, userId) {
