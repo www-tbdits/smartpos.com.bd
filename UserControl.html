@@ -531,7 +531,7 @@
         <div class="header-bar">
             <div class="header-title">
                 <i class="fa-solid fa-user-shield"></i>
-                USER CONTROL
+                USER CONTROL-1
             </div>
         </div>
 
@@ -625,7 +625,7 @@
                 </label>
                 <div class="modal-footer-right">
                     <button class="btn" onclick="closePermissionModal()">Cancel</button>
-                    <button class="btn btn-success" onclick="saveUserWithPermissions()">
+                    <button class="btn btn-success" id="savePermBtn" onclick="saveUserWithPermissions()">
                         <i class="fa-solid fa-floppy-disk"></i> Save
                     </button>
                 </div>
@@ -675,21 +675,6 @@
     </div>
 
     <script>
-        // নিরাপদ ফাইল সিস্টেম লোড করার পদ্ধতি
-        let fs = null;
-        let path = null;
-        try {
-            if (typeof require !== 'undefined') {
-                fs = require('fs');
-                path = require('path');
-            }
-        } catch (e) {
-            console.log("Running in browser mode.");
-        }
-
-        const FILE_DB_PATH = "E:\\TSBackup\\TailoringSoft26.Lsd";
-
-        // আপনার ড্যাশবোর্ডের সাথে যুক্ত ৮টি পেজ/মডিউল
         const posModules = [
             { id: "CloudPOS.html", label: "Cloud POS", file: "CloudPOS.html", icon: "fa-solid fa-cart-shopping" },
             { id: "customers.htm", label: "Customers", file: "customers.htm", icon: "fa-solid fa-users" },
@@ -797,45 +782,11 @@
             document.getElementById('alertModal').classList.remove('show');
         }
 
-        // Database Initialization & Save
-        function initDatabase() {
-            if (!fs) {
-                const local = localStorage.getItem('smartpos_users_db');
-                savedUsers = local ? JSON.parse(local) : {};
-                renderUserTable();
-                return;
-            }
-            try {
-                if (!fs.existsSync(FILE_DB_PATH)) {
-                    const dir = path.dirname(FILE_DB_PATH);
-                    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-                    fs.writeFileSync(FILE_DB_PATH, JSON.stringify({}), 'utf8');
-                    savedUsers = {};
-                } else {
-                    const content = fs.readFileSync(FILE_DB_PATH, 'utf8');
-                    savedUsers = content ? JSON.parse(content) : {};
-                }
-                renderUserTable();
-            } catch (err) {
-                showAlert("Database Error", err.message, "fa-solid fa-circle-xmark", "#dc2626");
-            }
-        }
-
-        function saveToStorage() {
-            if (!fs) {
-                localStorage.setItem('smartpos_users_db', JSON.stringify(savedUsers));
-                return true;
-            }
-            try {
-                fs.writeFileSync(FILE_DB_PATH, JSON.stringify(savedUsers, null, 4), 'utf8');
-                return true;
-            } catch (err) {
-                showAlert("Save Failed", err.message, "fa-solid fa-circle-xmark", "#dc2626");
-                return false;
-            }
-        }
-
-        initDatabase();
+        // Receive users map from Firebase Firestore
+        window.setUsersFromFirestore = function(usersMap) {
+            savedUsers = usersMap && typeof usersMap === "object" ? usersMap : {};
+            renderUserTable();
+        };
 
         // Open Permission Popup Modal
         function openPermissionModal(existingId = null) {
@@ -894,8 +845,8 @@
             draftUserData = null;
         }
 
-        // Save New or Edited User with Selected Permissions
-        function saveUserWithPermissions() {
+        // Save New or Edited User with Selected Permissions to Firebase
+        async function saveUserWithPermissions() {
             if (!draftUserData) return;
 
             const selectedPrivileges = [];
@@ -903,29 +854,49 @@
                 selectedPrivileges.push(chk.value);
             });
 
-            if (editingUserId && editingUserId !== draftUserData.id) {
-                delete savedUsers[editingUserId];
-            }
+            const saveBtn = document.getElementById('savePermBtn');
+            saveBtn.disabled = true;
 
-            savedUsers[draftUserData.id] = {
+            const previousId = editingUserId;
+            const payload = {
+                userId: draftUserData.id,
                 password: draftUserData.password,
                 name: draftUserData.name,
                 designation: draftUserData.designation,
                 privileges: selectedPrivileges
             };
 
-            if (saveToStorage()) {
-                const wasEditing = Boolean(editingUserId);
+            try {
+                if (typeof window.saveUserToFirestore === "function") {
+                    await window.saveUserToFirestore(draftUserData.id, payload, previousId);
+                } else {
+                    if (previousId && previousId !== draftUserData.id) {
+                        delete savedUsers[previousId];
+                    }
+                    savedUsers[draftUserData.id] = {
+                        password: payload.password,
+                        name: payload.name,
+                        designation: payload.designation,
+                        privileges: payload.privileges
+                    };
+                    renderUserTable();
+                }
+
+                const wasEditing = Boolean(previousId);
                 const savedId = draftUserData.id;
                 closePermissionModal();
                 resetForm();
-                renderUserTable();
                 showAlert(
                     wasEditing ? "User Updated" : "User Added",
-                    `User '${savedId}' saved with ${selectedPrivileges.length} page permission(s).`,
+                    `User '${savedId}' saved to Firebase with ${selectedPrivileges.length} page permission(s).`,
                     "fa-solid fa-circle-check",
                     "#16a34a"
                 );
+            } catch (err) {
+                console.error("Save user error:", err);
+                showAlert("Firebase Error", "Failed to save user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
+            } finally {
+                saveBtn.disabled = false;
             }
         }
 
@@ -998,12 +969,19 @@
         function deleteUser(event, userId) {
             if (event) event.stopPropagation();
             if (!savedUsers[userId]) return;
-            showConfirm("Delete User", `Are you sure you want to delete user '${userId}' (${savedUsers[userId].name})?`, () => {
-                delete savedUsers[userId];
-                if (editingUserId === userId) resetForm();
-                if (saveToStorage()) {
-                    renderUserTable();
+            showConfirm("Delete User", `Are you sure you want to delete user '${userId}' (${savedUsers[userId].name})?`, async () => {
+                try {
+                    if (typeof window.deleteUserFromFirestore === "function") {
+                        await window.deleteUserFromFirestore(userId);
+                    } else {
+                        delete savedUsers[userId];
+                        renderUserTable();
+                    }
+                    if (editingUserId === userId) resetForm();
                     showAlert("Deleted", `User '${userId}' has been removed.`, "fa-solid fa-trash-can", "#dc2626");
+                } catch (err) {
+                    console.error("Delete user error:", err);
+                    showAlert("Firebase Error", "Failed to delete user: " + err.message, "fa-solid fa-circle-xmark", "#dc2626");
                 }
             });
         }
@@ -1026,8 +1004,8 @@
             const query = document.getElementById('searchUserInput').value.trim().toLowerCase();
             const entries = Object.entries(savedUsers).filter(([id, data]) => {
                 return id.toLowerCase().includes(query) ||
-                       data.name.toLowerCase().includes(query) ||
-                       data.designation.toLowerCase().includes(query);
+                       String(data.name || "").toLowerCase().includes(query) ||
+                       String(data.designation || "").toLowerCase().includes(query);
             });
 
             document.getElementById('userCount').textContent = Object.keys(savedUsers).length;
@@ -1070,6 +1048,76 @@
                 `;
             }).join("");
         }
+
+        renderUserTable();
+    </script>
+
+    <script type="module">
+        import { db } from './assets/firebase-config.js';
+        import {
+            collection,
+            getDocs,
+            doc,
+            setDoc,
+            deleteDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+        const USERS_COLLECTION = "users";
+
+        async function loadUsersFromFirestore() {
+            try {
+                const snap = await getDocs(collection(db, USERS_COLLECTION));
+                const usersMap = {};
+                snap.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const uId = data.userId || docSnap.id;
+                    usersMap[uId] = {
+                        password: data.password || "",
+                        name: data.name || "",
+                        designation: data.designation || "",
+                        privileges: Array.isArray(data.privileges) ? data.privileges : []
+                    };
+                });
+                if (typeof window.setUsersFromFirestore === "function") {
+                    window.setUsersFromFirestore(usersMap);
+                }
+            } catch (err) {
+                console.error("Error loading users from Firestore:", err);
+            }
+        }
+
+        window.saveUserToFirestore = async function(userId, payload, previousId = null) {
+            const docPayload = {
+                userId,
+                password: payload.password,
+                name: payload.name,
+                designation: payload.designation,
+                privileges: payload.privileges,
+                updatedAtMs: Date.now(),
+                updatedAt: serverTimestamp()
+            };
+
+            if (!previousId) {
+                docPayload.createdAtMs = Date.now();
+                docPayload.createdAt = serverTimestamp();
+            }
+
+            await setDoc(doc(db, USERS_COLLECTION, userId), docPayload, { merge: true });
+
+            if (previousId && previousId !== userId) {
+                await deleteDoc(doc(db, USERS_COLLECTION, previousId));
+            }
+
+            await loadUsersFromFirestore();
+        };
+
+        window.deleteUserFromFirestore = async function(userId) {
+            await deleteDoc(doc(db, USERS_COLLECTION, userId));
+            await loadUsersFromFirestore();
+        };
+
+        window.addEventListener("DOMContentLoaded", loadUsersFromFirestore);
     </script>
 </body>
 </html>
