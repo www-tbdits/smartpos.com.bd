@@ -61,7 +61,9 @@ const minimizedDock = document.getElementById('minimizedDock');
 
 // Admin role dynamic check
 const isFullAccess = loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.username === 'jems');
-
+const userPermissions = Array.isArray(loggedInUser && loggedInUser.permissions)
+    ? loggedInUser.permissions
+    : (Array.isArray(loggedInUser && loggedInUser.privileges) ? loggedInUser.privileges : []);
 if (isFullAccess) {
     iconGrid.classList.add('full-access');
 } else {
@@ -72,7 +74,7 @@ let activeWindowsState = JSON.parse(sessionStorage.getItem('tbdits_active_window
 
 iconGrid.innerHTML = '';
 features.forEach(f => {
-    if (f.label !== 'Logout' && !isFullAccess && (!loggedInUser || !loggedInUser.permissions || !loggedInUser.permissions.includes(f.label))) return;
+    if (!isFullAccess && !userPermissions.includes(f.label)) return;
 
     const card = document.createElement('div');
     card.className = 'icon-card';
@@ -87,7 +89,19 @@ features.forEach(f => {
     iconGrid.appendChild(card);
 });
 
+const renderedCardsCount = iconGrid.querySelectorAll('.icon-card').length;
+iconGrid.classList.remove('single-row', 'full-access', 'partial-access');
+
+if (renderedCardsCount <= 4) {
+    iconGrid.classList.add('single-row');
+} else if (isFullAccess) {
+    iconGrid.classList.add('full-access');
+} else {
+    iconGrid.classList.add('partial-access');
+}
+
 const openWindows = {};
+
 
 function saveState() {
     const stateObj = {};
